@@ -1,4 +1,23 @@
-This work is copyright 2021 Callum Goddard, and is licensed under the Creative Commons Attribution-Share Alike 3.0 Unported 
-Licence. To view a copy of this licence, visit 
-http://creativecommons.org/licenses/by-sa/3.0/
-or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
+This work is copyright 2021 Callum Goddard, and is licensed under the Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). To view a copy of this licence, visit https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+A short version of the licence:
+
+You are free to:
+```
+Share — copy and redistribute the material in any medium or format
+Adapt — remix, transform, and build upon the material
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+```
+Under the following terms:
+```
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+
+NonCommercial — You may not use the material for commercial purposes.
+
+ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+```
+
+Full legal details can be found here: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+
