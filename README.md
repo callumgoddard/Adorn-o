@@ -1,6 +1,6 @@
 # Adorn-o
 
-Adorn-o is a computationally creative musical performance system for virtuosic bass guitar performance implement in Python. This has been developed as part of Callum Goddard's PhD at Queen Mary University of London (QMUL). It is offered as is with no support provided.
+Adorn-o is a computationally creative musical performance system for virtuosic bass guitar performance implement in Python developed as part of Callum Goddard's PhD at Queen Mary University of London (QMUL). It is offered as is with no support provided.
 
 ## How to start
 
