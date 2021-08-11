@@ -15,7 +15,7 @@ As (currently) no requirements.txt is provided, running `test_all.py` will run t
  - Python 2.7 (an update to python 3 is in the works)
  - R 3.2.1 to run the rpy2
  - rpy2 version 2.8.6
- - pyguitarpro - https://github.com/Perlence/PyGuitarPro/releases/tag/v0.5
+ - pyguitarpro: https://github.com/Perlence/PyGuitarPro/releases/tag/v0.5
  - synpy (provided but sourced from: https://code.soundsoftware.ac.uk/projects/syncopation-dataset/repository/show/synpy)
  - scipy, numpy and likely a few more....
 
