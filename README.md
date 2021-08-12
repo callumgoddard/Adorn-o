@@ -17,6 +17,7 @@ As (currently) no requirements.txt is provided, running `test_all.py` will run t
  - rpy2 version 2.8.6
  - pyguitarpro: https://github.com/Perlence/PyGuitarPro/releases/tag/v0.5
  - matlab python module
+ - The bass_guitar_waveguide_model: https://github.com/callumgoddard/bass_guitar_waveguide_model/ for synthesis of the audio output
  - synpy (provided but sourced from: https://code.soundsoftware.ac.uk/projects/syncopation-dataset/repository/show/synpy)
  - scipy, numpy and likely a few more....
 
