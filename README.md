@@ -17,7 +17,7 @@ As (currently) no requirements.txt is provided, running `test_all.py` will run t
  - rpy2 version 2.8.6
  - pyguitarpro: https://github.com/Perlence/PyGuitarPro/releases/tag/v0.5
  - matlab python module
- - The bass_guitar_waveguide_model: https://github.com/callumgoddard/bass_guitar_waveguide_model/ for synthesis of the audio output
+ - [bass_guitar_waveguide_model](https://github.com/callumgoddard/bass_guitar_waveguide_model/) for synthesis of the audio output
  - synpy (provided but sourced from: https://code.soundsoftware.ac.uk/projects/syncopation-dataset/repository/show/synpy)
  - scipy, numpy and likely a few more....
 
@@ -25,3 +25,13 @@ As (currently) no requirements.txt is provided, running `test_all.py` will run t
 ## Contact
 
 Callum Goddard: [c.goddard@qmul.ac.uk](c.goddard@qmul.ac.uk)
+
+## Reference
+```
+@phdthesis{Goddard:2021,
+	address = {Queen Mary University of London},
+	author = {Callum Goddard},
+	school = {School of Electronic Engineering and Computer Science},
+	title = {Virtuosity in Computationally Creative Musical Performance for Bass Guitar},
+	year = {2021}}
+ ```
