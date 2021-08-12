@@ -41,7 +41,9 @@ def start_matlab():
 
 
 def add_physical_files_to_path(matlab_engine,
-                               path='/Users/cg306/Documents/MATLAB'):
+                               path='bass_guitar_waveguide_model'):
+    """Requires: https://github.com/callumgoddard/bass_guitar_waveguide_model to be
+    added to the python working directory"""
     p = matlab_engine.genpath(path)
     matlab_engine.addpath(p)
     return matlab_engine
