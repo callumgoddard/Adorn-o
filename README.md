@@ -18,7 +18,7 @@ As (currently) no requirements.txt is provided, running `test_all.py` will run t
  - pyguitarpro: https://github.com/Perlence/PyGuitarPro/releases/tag/v0.5
  - matlab python module
  - [bass_guitar_waveguide_model](https://github.com/callumgoddard/bass_guitar_waveguide_model/) for synthesis of the audio output
- - FANTASTIC (a slightly modified version is provided and was originally sourced from: http://www.doc.gold.ac.uk/isms/m4s/FANTASTIC_docs.pdf)
+ - FANTASTIC (a slightly modified version is provided. Original is found here: http://doc.gold.ac.uk/isms/mmm/?page=Software%20and%20Documentation
  - synpy (provided but sourced from: https://code.soundsoftware.ac.uk/projects/syncopation-dataset/repository/show/synpy)
  - scipy, numpy and likely a few more....
 
