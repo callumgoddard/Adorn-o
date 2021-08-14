@@ -26,14 +26,14 @@ You can download and place the `synpy` folder within the root directory and call
 2to3 --output-dir=Adorn-o/synpy -W -n synpy
 ```
 
-Which _should_ update and add the synpy files required into the correct location using [2to3](https://docs.python.org/3/library/2to3.html). You may need to correct the the tabs within `synpy/syncopation.py` as these can be  inconsistent after the 2to3 conversion is applied.
+Which _should_ update and add the synpy files required into the correct location using [2to3](https://docs.python.org/3/library/2to3.html). You may need to correct the the tabs within `Adorn-o/synpy/syncopation.py` as there can be inconsistencies after the 2to3 conversion.
 
 
 ### Adding and Updating FANTASTIC:
 
 The [FANTASTIC](http://doc.gold.ac.uk/isms/mmm/?page=Software%20and%20Documentation) source files from: [http://www.doc.gold.ac.uk/isms/m4s/FANTASTIC.zip](http://www.doc.gold.ac.uk/isms/m4s/FANTASTIC.zip) are required to be extracted to:
 ```
-Adorn-o/feature_analysis/
+Adorn-o/feature_analysis/FANTASTIC
 ```
 
 Once extracted, the following code is then needed to be added to line 247 of `Adorn-o/feature_analysis/FANTASTIC/Fantastic.R`:
