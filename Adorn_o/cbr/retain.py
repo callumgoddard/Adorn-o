@@ -1,15 +1,14 @@
-
-
 import uuid
 import os
 import json
 
 import guitarpro
 
-import cbr
-from parser.API.get_functions import get_song_data
-import parser.API.write_functions
-import parser.API.datatypes
+from .. import cbr
+from ..parser.API.get_functions import get_song_data
+from .. import parser
+
+# import parser.API.datatypes
 
 # Take the revised song/measure/whatever
 
@@ -22,9 +21,7 @@ import parser.API.datatypes
 
 
 def retain(api_song_data, song_title, database, **kwargs):
-    """Performs the retain stage of the CBR
-
-    """
+    """Performs the retain stage of the CBR"""
 
     if isinstance(api_song_data, list):
         for song in api_song_data:
@@ -34,13 +31,13 @@ def retain(api_song_data, song_title, database, **kwargs):
 
     assert isinstance(database, cbr.Database)
 
-    output_location = kwargs.get('output_location',
-                                 database.save_folder + "/output/")
+    output_location = kwargs.get("output_location", database.save_folder + "/output/")
 
     artist_and_title_from_file_name = kwargs.get(
-        'artist_and_title_from_file_name', True)
-    move_tabs = kwargs.get('move_tabs', False)
-    add_to_database = kwargs.get('add_to_database', True)
+        "artist_and_title_from_file_name", True
+    )
+    move_tabs = kwargs.get("move_tabs", False)
+    add_to_database = kwargs.get("add_to_database", True)
 
     assert isinstance(artist_and_title_from_file_name, bool)
 
@@ -50,14 +47,12 @@ def retain(api_song_data, song_title, database, **kwargs):
 
     # Write out the file:
     if isinstance(api_song_data, list):
-        json_data, json_dict = parser.API.write_functions.api_to_json(
-            api_song_data)
+        json_data, json_dict = parser.API.write_functions.api_to_json(api_song_data)
     elif isinstance(api_song_data, parser.API.datatypes.Song):
 
-        json_data, json_dict = parser.API.write_functions.api_to_json(
-            [api_song_data])
+        json_data, json_dict = parser.API.write_functions.api_to_json([api_song_data])
 
-    with open(file_out, 'w') as write_file:
+    with open(file_out, "w") as write_file:
         json.dump(
             json_dict,
             write_file,
@@ -71,7 +66,8 @@ def retain(api_song_data, song_title, database, **kwargs):
             move_tabs=move_tabs,
             remove_duplicates=True,
             save_feature_files=False,
-            artist_and_title_from_file_name=artist_and_title_from_file_name)
+            artist_and_title_from_file_name=artist_and_title_from_file_name,
+        )
 
     return file_out
 
@@ -87,10 +83,9 @@ def check_output_path(gp5_file_out):
 
 
 def output_file_name(gp5_file_out, song_title):
-    song_title = song_title.replace(' ', '_')
+    song_title = song_title.replace(" ", "_")
     file_out = str(gp5_file_out + song_title + ".json")
     if os.path.isfile(str(gp5_file_out + song_title + ".json")):
 
-        file_out = str(gp5_file_out + song_title + str(uuid.uuid4())[:8] +
-                       ".json")
+        file_out = str(gp5_file_out + song_title + str(uuid.uuid4())[:8] + ".json")
     return file_out

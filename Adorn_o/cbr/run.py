@@ -9,8 +9,8 @@ from math import floor, log10, ceil
 # 3rd party imports
 import guitarpro
 
-import cbr
-import parser
+from .. import cbr
+from .. import parser
 
 BestMeasure = namedtuple("BestMeasure",
                          ["measure", 'complexity', 'difficulty'])

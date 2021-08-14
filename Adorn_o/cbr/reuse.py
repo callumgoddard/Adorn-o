@@ -14,14 +14,14 @@ import guitarpro
 #from backports.pampy import match, HEAD, TAIL, _
 # import difflib
 
-import parser.API.calculate_functions as calculate
-from parser.API.read_functions import read_basic_note_data
-from parser.API.datatypes import *
-import parser.API.update_functions as update
-import parser.utilities as utilities
-import feature_analysis as feature_analysis
-from evaluation import musiplectics
-import cbr
+from ..parser.API import calculate_functions as calculate
+from ..parser.API.read_functions import read_basic_note_data
+from ..parser.API.datatypes import *
+from ..parser.API import update_functions as update
+from ..parser import utilities
+from .. import feature_analysis
+from ..evaluation import musiplectics
+from .. import cbr
 from functools import reduce
 
 SelectedAdornedMeasure = namedtuple("SelectedAdornedMeasure",

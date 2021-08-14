@@ -1,18 +1,22 @@
-
-
 from collections import namedtuple
 import warnings
 
-from parser.API.datatypes import Measure, AdornedNote
-from parser.API.calculate_functions import calculate_heuristic
+from ..parser.API.datatypes import Measure, AdornedNote
+from ..parser.API.calculate_functions import calculate_heuristic
 
 # Named tuples for external access:
-retieved = namedtuple('Retrieved', ['id', 'measure'])
-candidate = namedtuple("Candidates", ['complexity', 'difficulty', 'id'])
+retieved = namedtuple("Retrieved", ["id", "measure"])
+candidate = namedtuple("Candidates", ["complexity", "difficulty", "id"])
 
 
-def retrieval(measure, measure_notes, database, complexity_weight,
-              difficulty_weight, **retrieval_parameters):
+def retrieval(
+    measure,
+    measure_notes,
+    database,
+    complexity_weight,
+    difficulty_weight,
+    **retrieval_parameters
+):
     """Retrieve the database entry that closest matches the measure input.
 
     Parameters
@@ -55,13 +59,12 @@ def retrieval(measure, measure_notes, database, complexity_weight,
     """
 
     for note in measure_notes:
-        assert isinstance(note, AdornedNote), ("%s is not type %s" % note,
-                                               AdornedNote)
-    assert isinstance(measure, Measure), ("measure is not type %s" % Measure)
+        assert isinstance(note, AdornedNote), ("%s is not type %s" % note, AdornedNote)
+    assert isinstance(measure, Measure), "measure is not type %s" % Measure
 
     # sort out the find_most_similar_params:
     # invert the similarity percent:
-    method = retrieval_parameters.get('method', 'all')
+    method = retrieval_parameters.get("method", "all")
 
     print("measure notes:", measure_notes)
     print(retrieval_parameters)
@@ -72,49 +75,56 @@ def retrieval(measure, measure_notes, database, complexity_weight,
         notes_in_measure=measure_notes,
         complexity_weight=complexity_weight,
         difficulty_weight=difficulty_weight,
-        similarity_threshold=retrieval_parameters.get('similarity_threshold',
-                                                      100),
-        percentile_range=retrieval_parameters.get('percentile_range',
-                                                  [0, 100]),
-        adorned=retrieval_parameters.get('adorned', True),
-        artists=retrieval_parameters.get('artists', 'all'),
-        files=retrieval_parameters.get('files', 'all'),
-        exclude_artists=retrieval_parameters.get('exclude_artists', ['none']),
-        exclude_files=retrieval_parameters.get('exclude_files', ['none']))
+        similarity_threshold=retrieval_parameters.get("similarity_threshold", 100),
+        percentile_range=retrieval_parameters.get("percentile_range", [0, 100]),
+        adorned=retrieval_parameters.get("adorned", True),
+        artists=retrieval_parameters.get("artists", "all"),
+        files=retrieval_parameters.get("files", "all"),
+        exclude_artists=retrieval_parameters.get("exclude_artists", ["none"]),
+        exclude_files=retrieval_parameters.get("exclude_files", ["none"]),
+    )
 
     sorted_candidates = database.sort_candidate_set(
-        candidate_set, complexity_weight, difficulty_weight)
+        candidate_set, complexity_weight, difficulty_weight
+    )
 
     # check there are candidates:
     if sorted_candidates == []:
         return None
 
-    if method == 'best':
+    if method == "best":
         if complexity_weight == 0 and difficulty_weight == 0:
-            warnings.warn("complexity_weight and difficulty_weight are 0." +
-                          "selected_candidates may not be what is expected")
+            warnings.warn(
+                "complexity_weight and difficulty_weight are 0."
+                + "selected_candidates may not be what is expected"
+            )
         print("best")
         selected_candidates = pick_top_candidate_ids(sorted_candidates, 1)
     if isinstance(method, int):
         if complexity_weight == 0 and difficulty_weight == 0:
-            warnings.warn("complexity_weight and difficulty_weight are 0." +
-                          "selected_candidates may not be what is expected")
+            warnings.warn(
+                "complexity_weight and difficulty_weight are 0."
+                + "selected_candidates may not be what is expected"
+            )
 
         print("Picking top %s..." % method)
         selected_candidates = pick_top_candidate_ids(sorted_candidates, method)
         print(selected_candidates)
-    if method == 'all':
+    if method == "all":
         print("all")
         print(sorted_candidates)
-        selected_candidates = pick_top_candidate_ids(sorted_candidates,
-                                                     len(sorted_candidates))
+        selected_candidates = pick_top_candidate_ids(
+            sorted_candidates, len(sorted_candidates)
+        )
 
     return retrieve_candidate_data(selected_candidates, database)
 
 
 def retrieve_candidate_data(selected_candidates, database):
 
-    unsorted_retrieved_measures = database.retrieve_data_from_multiple_entries(selected_candidates, True)
+    unsorted_retrieved_measures = database.retrieve_data_from_multiple_entries(
+        selected_candidates, True
+    )
 
     unsorted_retrieved_measures_id_list = [m.id for m in unsorted_retrieved_measures]
 
@@ -123,10 +133,7 @@ def retrieve_candidate_data(selected_candidates, database):
     retrieved_measures = []
     for selected_candidate in selected_candidates:
         index = unsorted_retrieved_measures_id_list.index(selected_candidate)
-        retrieved_measures.append(
-            unsorted_retrieved_measures[index]
-
-            )
+        retrieved_measures.append(unsorted_retrieved_measures[index])
 
     #    retrieved_measures.append(
     #        retieved(selected_candidate,
@@ -171,10 +178,10 @@ def sort_candidate_set(candidate_set, database, complexity_weight,
     return sorted_candidates
 """
 
+
 def pick_top_candidate_ids(sorted_candidates, top_n):
 
-    consolidated_candidates = consolidate_same_complexity_difficulty(
-        sorted_candidates)
+    consolidated_candidates = consolidate_same_complexity_difficulty(sorted_candidates)
 
     return select_top_n_consolidated(consolidated_candidates, top_n)
 
@@ -182,18 +189,23 @@ def pick_top_candidate_ids(sorted_candidates, top_n):
 def consolidate_same_complexity_difficulty(sorted_candidates):
 
     top_candidates = [
-        candidate(sorted_candidates[0].complexity,
-                  sorted_candidates[0].difficulty, [sorted_candidates[0].id])
+        candidate(
+            sorted_candidates[0].complexity,
+            sorted_candidates[0].difficulty,
+            [sorted_candidates[0].id],
+        )
     ]
 
     top_count = 0
     for s_c in sorted_candidates[1:]:
 
-        if s_c.complexity == top_candidates[top_count].complexity and s_c.difficulty == top_candidates[top_count].difficulty:
+        if (
+            s_c.complexity == top_candidates[top_count].complexity
+            and s_c.difficulty == top_candidates[top_count].difficulty
+        ):
             top_candidates[top_count].id.append(s_c.id)
         else:
-            top_candidates.append(
-                candidate(s_c.complexity, s_c.difficulty, [s_c.id]))
+            top_candidates.append(candidate(s_c.complexity, s_c.difficulty, [s_c.id]))
             top_count += 1
     return top_candidates
 

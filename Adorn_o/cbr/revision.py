@@ -6,15 +6,15 @@ from fractions import Fraction
 
 import guitarpro
 
-from cbr.reuse import (possible_artificial_harmonic_pitches,
+from ..cbr.reuse import (possible_artificial_harmonic_pitches,
                        possible_natural_harmonic_pitches)
-from parser.API.datatypes import *
-from parser.API.calculate_functions import (
+from ..parser.API.datatypes import *
+from ..parser.API.calculate_functions import (
     calculate_tied_note_durations, calculate_bars_from_note_list,
     calculate_note_pitch_artificial_harmonic, calculate_note_endtime,
     calcuate_note_is_in_measure)
-from parser.API.update_functions import *
-from parser.utilities import fret_2_harmonic_interval
+from ..parser.API.update_functions import *
+from ..parser.utilities import fret_2_harmonic_interval
 
 open_string_changes = namedtuple("OpenStringChanges", ["slide", 'technique'])
 

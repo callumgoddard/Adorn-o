@@ -23,7 +23,7 @@ from .datatypes import *
 from .. import utilities
 from . import read_functions
 
-from evaluation import musiplectics
+from ...evaluation import musiplectics
 from functools import reduce
 
 

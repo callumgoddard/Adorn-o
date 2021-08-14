@@ -8,14 +8,14 @@ import csv
 import os.path
 
 # 3rd party imports
-import synpy
-import synpy.PRS as PRS
-import synpy.KTH as KTH
-import synpy.LHL as LHL
-import synpy.SG as SG
-import synpy.TMC as TMC
-import synpy.TOB as TOB
-import synpy.WNBD as WNBD
+from .. import synpy
+from ..synpy import PRS
+from ..synpy import KTH
+from ..synpy import LHL
+from ..synpy import SG
+from ..synpy import TMC
+from ..synpy import TOB
+from ..synpy import WNBD
 
 import pandas as pd
 
