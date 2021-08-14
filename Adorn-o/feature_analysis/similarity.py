@@ -10,8 +10,8 @@ import csv
 import rpy2.robjects as robjects
 
 # Local application imports
-import fantastic_interface
-import synpy_interface
+from . import fantastic_interface
+from . import synpy_interface
 import parser.API.calculate_functions as calculate
 
 
@@ -94,7 +94,7 @@ def merge_synpy_and_fantastic_features(
                 fantastic_features = robjects.r['rbind'](fantastic_features, f)
 
         except:
-            print "Error when analysing %s" % mcsv_file
+            print("Error when analysing %s" % mcsv_file)
 
     try:
         all_features = robjects.r['merge'](fantastic_features,
@@ -107,7 +107,7 @@ def merge_synpy_and_fantastic_features(
 
         return all_features
     except:
-        print "could not merge feature table"
+        print("could not merge feature table")
         return False
 
 
@@ -222,11 +222,11 @@ def read_in_feature_dataframe(feature_dataframe):
     read it in as a dataframe then return it.
     '''
     if isinstance(feature_dataframe, robjects.vectors.DataFrame):
-        print "is already a dataframe input"
+        print("is already a dataframe input")
 
     if isinstance(feature_dataframe, str):
 
-        print "Reading feature dataframe from csv..."
+        print("Reading feature dataframe from csv...")
         read_feature_csv = robjects.r('''
                     read.feature.csv <- function(file = 'all_features.csv' ){
                     data.frame(read.csv(file))

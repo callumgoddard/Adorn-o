@@ -91,7 +91,7 @@ def fret_position_weights(musiplectics_folder=musiplectics_folder,
 
     # if log scale is true, scale the values:
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values, and rest the '0' to be 1:
             values[key] = log((values.get(key) + 1), 2)
 
@@ -168,12 +168,12 @@ def interval_weights(musiplectics_folder=musiplectics_folder,
                             rows[technique_col].split('.')[interval])] = float(
                                 rows[musiplectic_score_col])
                     except ValueError:
-                        print "Not an interval"
+                        print("Not an interval")
 
     # if log scale is true, scale the values:
     values = interval_values
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values, and rest the '0' to be 1:
             values[key] = log((values.get(key) + 1), 2)
 
@@ -246,7 +246,7 @@ def dynamic_weights(musiplectics_folder=musiplectics_folder,
     # if log scale is true, scale the values:
     values = dynamic_values
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values, and rest the '0' to be 1:
             values[key] = log((values.get(key) + 1), 2)
 
@@ -351,7 +351,7 @@ def key_sig_weights(musiplectics_folder=musiplectics_folder,
     # if log scale is true, scale the values:
     values = keysig_values
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values, and rest the '0' to be 1:
             values[key] = log((values.get(key) + 1), 2)
 
@@ -410,7 +410,7 @@ def articulation_weights(musiplectics_folder=musiplectics_folder,
     # if log scale is true, scale the values:
     values = articulation_values
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values, and rest the '0' to be 1:
             values[key] = log((values.get(key) + 1), 2)
 
@@ -470,7 +470,7 @@ def duration_weights(musiplectics_folder=musiplectics_folder,
     # if log scale is true, scale the values:
     values = duration_values
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values, and rest the '0' to be 1:
             values[key] = log((values.get(key) + 1), 2)
 
@@ -548,7 +548,7 @@ def expression_weights(musiplectics_folder=musiplectics_folder,
     # if log scale is true, scale the values:
     values = expression_values
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values, and rest the '0' to be 1:
             values[key] = log((values.get(key) + 1), 2)
 
@@ -623,14 +623,14 @@ def shifting_weights(musiplectics_folder=musiplectics_folder,
                 shifting_values['0'] = 0.961
 
         # rescale the other shifting values to make no shift = 1:
-        for key in shifting_values.keys():
+        for key in list(shifting_values.keys()):
             shifting_values[
                 key] = shifting_values.get(key) / shifting_values.get('0')
 
     # if log scale is true, scale the values:
     values = shifting_values
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values, and rest the '0' to be 1:
             values[key] = log((values.get(key) + 1), 2)
 
@@ -739,7 +739,7 @@ def technique_weights(musiplectics_folder=musiplectics_folder,
     # if log scale is true, scale the values:
     values = technique_values
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values
             values[key] = log((values.get(key) + 1), 2)
 
@@ -807,7 +807,7 @@ def tempo_weights(musiplectics_folder=musiplectics_folder,
     # if log scale is true, scale the values:
     values = tempo_values
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values, and rest the '0' to be 1:
             values[key] = log((values.get(key) + 1), 2)
 
@@ -816,7 +816,7 @@ def tempo_weights(musiplectics_folder=musiplectics_folder,
     # if log scale is true, scale the values:
     values = tempo_beat_dur_rt
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values, and rest the '0' to be 1:
             values[key] = log((values.get(key) + 1), 2)
 
@@ -879,7 +879,7 @@ def time_sig_weights(musiplectics_folder=musiplectics_folder,
     # if log scale is true, scale the values:
     values = timesig_values
     if log_scale_values:
-        for key in values.keys():
+        for key in list(values.keys()):
             # log scale the values, and rest the '0' to be 1:
             values[key] = log((values.get(key) + 1), 2)
 

@@ -57,13 +57,13 @@ def make_gp5_song(song):
     gp5_song = guitarpro.models.Song(
         versionTuple=(5, 1, 0),
         clipboard=None,
-        title=unicode(song.meta_data.title),
-        tempoName=u'',
+        title=str(song.meta_data.title),
+        tempoName='',
         tempo=120,
         key='',
         measureHeaders=[],
     )
-    print gp5_song
+    print(gp5_song)
     return
 
 

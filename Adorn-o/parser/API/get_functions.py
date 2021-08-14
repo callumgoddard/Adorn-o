@@ -12,26 +12,26 @@ import guitarpro
 
 # Local application imports
 import parser
-from calculate_functions import calculate_note_pitch, calculate_duration_for_notes_in_song, calculate_triplet_feel_note_durations, calculate_polyphony_for_measures_in_a_song
-import datatypes
-from update_functions import update_note
-import dict_conversion as dict2api
+from .calculate_functions import calculate_note_pitch, calculate_duration_for_notes_in_song, calculate_triplet_feel_note_durations, calculate_polyphony_for_measures_in_a_song
+from . import datatypes
+from .update_functions import update_note
+from . import dict_conversion as dict2api
 
 
 def get_from_JSON(json_dict):
     """ get the API data from an JSON dict
 
     """
-    if 'tracks' in json_dict.keys():
+    if 'tracks' in list(json_dict.keys()):
         return dict2api.dict_to_tracks(json_dict)
-    elif 'song' in json_dict.keys():
+    elif 'song' in list(json_dict.keys()):
         return dict2api.dict_to_Song(json_dict)
-    elif 'notes' in json_dict.keys() and 'start_time' in json_dict.keys(
-    ) and 'meta_data' in json_dict.keys():
+    elif 'notes' in list(json_dict.keys()) and 'start_time' in list(json_dict.keys(
+    )) and 'meta_data' in list(json_dict.keys()):
         return dict2api.dict_to_Measure(json_dict)
-    elif 'adorned_note' in json_dict.keys():
+    elif 'adorned_note' in list(json_dict.keys()):
         return dict2api.dict_to_AdornedNote(json_dict)
-    elif 'rest' in json_dict.keys():
+    elif 'rest' in list(json_dict.keys()):
         return dict2api.dict_to_Rest(json_dict)
 
 
@@ -141,7 +141,7 @@ def get_notated_duration(duration):
     if duration.value is not None:
         return datatypes.NotatedDuration(
             Fraction(1, duration.value), duration.isDotted,
-            duration.isDoubleDotted,
+            False, #duration.isDoubleDotted,
             datatypes.Tuplet(duration.tuplet.enters, duration.tuplet.times))
     else:
         return datatypes.NotatedDuration(
@@ -722,7 +722,8 @@ def get_measure_meta_data(song, measure):
     return datatypes.MeasureMetaData(
         get_song_title(song), get_measure_number(measure),
         get_key_signature(measure), get_timesignature(measure),
-        get_tempo(measure), get_triplet_feel(measure), None, None, None)
+        #get_tempo(measure), get_triplet_feel(measure), None, None, None)
+        song.tempo, get_triplet_feel(measure), None, None, None)
 
 
 # Get song title
@@ -768,8 +769,9 @@ def get_triplet_feel(measure):
 # this is slightly more complex as there is a variable tempo
 # that is changeable in the beat.effect.MixTableChange.tempo.value
 # also need to convert guitarpro.Tempo to int
-def get_tempo(measure):
-    return measure.header.tempo.value
+def get_tempo(song):
+    #return measure.header.tempo.value
+    return song.tempo
 
 
 # Get's the song data from guitar pro data structure

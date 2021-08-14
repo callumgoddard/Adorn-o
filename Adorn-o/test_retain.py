@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 import shutil
 import glob
@@ -20,7 +20,7 @@ database = cbr.Database('test_retain', True)
 #shutil.rmtree(database.save_folder + "/gpfiles/")
 
 database.load()
-assert len(database.data.keys()) == 0
+assert len(list(database.data.keys())) == 0
 
 output = cbr.retain(
     api_song,
@@ -32,7 +32,7 @@ output = cbr.retain(
 database.load()
 print(output)
 assert os.path.isfile(output)
-assert len(database.data.keys()) == 0
+assert len(list(database.data.keys())) == 0
 
 output = cbr.retain(
     api_song,
@@ -44,7 +44,7 @@ output = cbr.retain(
 database.load()
 print(output)
 assert os.path.isfile(output)
-assert len(database.data.keys()) == 2
+assert len(list(database.data.keys())) == 2
 
 database = cbr.Database('test_retain', True)
 
@@ -54,11 +54,11 @@ for file in glob.glob(database.save_folder + "/output/*"):
     os.remove(file)
 
 database.load()
-assert len(database.data.keys()) == 0
+assert len(list(database.data.keys())) == 0
 
 output = cbr.retain(
     api_song, 'tol test', database, artist_and_title_from_file_name=True)
 
 database.load()
 assert os.path.isfile(output)
-assert list(set(map(lambda e: e[1], database.data.values()))) == ['EdSheeran']
+assert list(set([e[1] for e in list(database.data.values())])) == ['EdSheeran']

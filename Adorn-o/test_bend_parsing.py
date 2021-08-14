@@ -8,7 +8,7 @@ song_data = parser.API.get_functions.get_song_data(gp5_data)
 
 for measure in song_data[0].measures:
     for note in measure.notes:
-        print(note.adornment.fretting.modulation)
+        print((note.adornment.fretting.modulation))
 
 song_data_json, song_data_dict = parser.API.write_functions.api_to_json(
     song_data)
@@ -33,7 +33,7 @@ for measure_orig, measure_json in zip(song_data[0].measures,
         gp5_wellformedness=True)
 
     for note in new_measure.measure.notes:
-        print(len(note.adornment.fretting.modulation.bend.points))
+        print((len(note.adornment.fretting.modulation.bend.points)))
         assert len(note.adornment.fretting.modulation.bend.points) >= 2
 
 
@@ -42,4 +42,4 @@ song_data = parser.API.get_functions.get_song_data(gp5_data)
 
 for measure in song_data[0].measures:
     for note in measure.notes:
-        print(note.adornment.fretting.modulation.bend)
+        print((note.adornment.fretting.modulation.bend))

@@ -1,3 +1,3 @@
 
 
-import musiplectics
+from . import musiplectics

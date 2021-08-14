@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 from fractions import Fraction
 
@@ -766,7 +766,7 @@ print(calculate_grace_note_possitions([grace_note_test]))
 # test calculate_playing_complexity()
 
 # Read in the GP5 Test file:
-gp5_file = "./gp5files/test_scores/calculate_playing_complexity_test.gp5"
+gp5_file = "./Adorn-o/gp5files/test_scores/calculate_playing_complexity_test.gp5"
 gp5song = guitarpro.parse(gp5_file)
 api_test_song = parser.API.get_functions.get_song_data(gp5song)
 

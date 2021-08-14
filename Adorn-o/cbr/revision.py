@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 from math import sqrt
 from collections import namedtuple
@@ -482,7 +482,7 @@ def revise_song(song, revise_for_gp5=True):
             break
 
     # put back the measures into the song:
-    measure_number_indexes = map(lambda m: m.meta_data.number, song.measures)
+    measure_number_indexes = [m.meta_data.number for m in song.measures]
 
     for rev_m in revised_measures:
         measure_index = measure_number_indexes.index(rev_m.meta_data.number)
@@ -769,9 +769,7 @@ def revise_open_string_restrictions(current_note, previous_note, measure=None):
                         print("Measure!")
                         # find the most common technique in the measure
                         # that isn't tap and use that for the note:
-                        measure_plucking_techniques = map(
-                            lambda m: m.adornment.plucking.technique,
-                            measure.notes)
+                        measure_plucking_techniques = [m.adornment.plucking.technique for m in measure.notes]
                         print(measure_plucking_techniques)
                         technique_counts = {}
                         for m_p_tech in measure_plucking_techniques:
@@ -786,7 +784,7 @@ def revise_open_string_restrictions(current_note, previous_note, measure=None):
                             previous_note_new_pluck_technique = 'finger'
                         else:
                             best_technique_and_count = []
-                            for t in technique_counts.keys():
+                            for t in list(technique_counts.keys()):
                                 if best_technique_and_count == []:
                                     best_technique_and_count = [
                                         t, technique_counts[t]
@@ -1107,7 +1105,7 @@ def closest_harmonic_playing_pos(current_note, harmonic_positions):
         pos_distance.append((playing_pos, dist))
 
     # get the distance:
-    distances = (map(lambda pd: pd[1], pos_distance))
+    distances = ([pd[1] for pd in pos_distance])
     # get the min distance index:
     min_dist_index = distances.index(min(distances))
     # return the playing position with the minimum distance:

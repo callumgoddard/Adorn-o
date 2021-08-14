@@ -8,7 +8,7 @@ import parser
 import parser.API.dict_conversion as api2dict
 
 
-gp5_file_dict = "./gp5files/test_scores/dict_test.gp5"
+gp5_file_dict = "./Adorn-o/gp5files/test_scores/dict_test.gp5"
 gp5song_dict = guitarpro.parse(gp5_file_dict)
 api_song_dict = parser.API.get_functions.get_song_data(gp5song_dict)
 

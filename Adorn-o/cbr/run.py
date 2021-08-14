@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 import os
 import glob
@@ -111,7 +111,7 @@ def run(gp5_file,
                 continue
 
             # get only the adorned_measure data:
-            adorned_measures = map(lambda am: am.measure, candidate_set)
+            adorned_measures = [am.measure for am in candidate_set]
             del candidate_set
 
             print("Reuse:")
@@ -342,7 +342,7 @@ def action_reflection_loop(database,
             break
 
         # get only the adorned_measure data:
-        adorned_measures = map(lambda am: am.measure, candidate_set)
+        adorned_measures = [am.measure for am in candidate_set]
 
         del candidate_set
 
@@ -880,7 +880,7 @@ def pick_percentile_pieces(pieces, virtuosity_percentile, percentile_range=1):
 
 def prep_and_get_pieces_data(pieces, database):
     # get only the ids...
-    initial_candidates = map(lambda p: p.id, pieces)
+    initial_candidates = [p.id for p in pieces]
 
     candidate_set_ids = []
     for c_id in initial_candidates:

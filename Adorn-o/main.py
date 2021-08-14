@@ -9,7 +9,7 @@ Some fun facts....
     in my system.
 
 """
-from __future__ import division, print_function, absolute_import
+
 
 import guitarpro
 
@@ -37,7 +37,7 @@ def initial_setup(database_name,
     database = cbr.Database(
         database_name, weight_set=weight_set, new_database=new_database)
     database.load()
-    print(len(database.data.keys()))
+    print(len(list(database.data.keys())))
 
     #database.add_entries_from_list_of_gp5_files(
     #    ['./gp5files/GradePieces/Grade8/Love Games-no-repeats.gp5'],
@@ -74,7 +74,7 @@ def initial_setup(database_name,
 
     database = cbr.Database(database_name)
     database.load()
-    print('Database Size: ', len(database.data.keys()))
+    print('Database Size: ', len(list(database.data.keys())))
 
     with open(database_name + '/virtuosity_thresholds.csv', 'w') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',', quotechar='"')
@@ -108,7 +108,7 @@ def database_virtuosity_thresholds(
 
     database = cbr.Database(database_name, weight_set=weight_set)
     database.load()
-    print('Database Size: ', len(database.data.keys()))
+    print('Database Size: ', len(list(database.data.keys())))
 
     with open(database_name + '/virtuosity_thresholds.csv', 'w') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=',', quotechar='"')

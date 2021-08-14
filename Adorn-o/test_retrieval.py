@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 import json
 # 3rd party imports
@@ -48,7 +48,7 @@ c_set = database.find_most_similar(
     percentile_range=[75, 100])
 assert len(c_set) == 6
 
-candidate_test_set = database.data.keys()
+candidate_test_set = list(database.data.keys())
 
 sorted_test_set_1 = [
     cbr.candidate(5, 5, "id1"),
@@ -75,7 +75,7 @@ sorted_test_set_2 = [
 ]
 
 for x, ans1, ans2 in zip(
-        range(0, 5),
+        list(range(0, 5)),
     [['id1', 'id2'], ['id1', 'id2'], ['id1', 'id2', 'id3'],
      ['id1', 'id2', 'id3', 'id4'], ['id1', 'id2', 'id3', 'id4', 'id5'
                                     ], ['id1', 'id2', 'id3', 'id4', 'id5']],
@@ -176,11 +176,10 @@ for complexity_weight, difficulty_weight in [[1, 1], [0, 0], [-1, -1], [1, -1],
 
     assert len(retrieved_measures) == 2
     if complexity_weight != 0 and difficulty_weight != 0:
-        print(map(lambda rm: rm.id, retrieved_measures))
-        print(map(lambda sc: sc.id, sorted_candidate_test_set[0:2]))
+        print([rm.id for rm in retrieved_measures])
+        print([sc.id for sc in sorted_candidate_test_set[0:2]])
 
-        assert map(lambda rm: rm.id, retrieved_measures) == map(
-            lambda sc: sc.id, sorted_candidate_test_set[0:2])
+        assert [rm.id for rm in retrieved_measures] == [sc.id for sc in sorted_candidate_test_set[0:2]]
 
     retrieved_measures = cbr.retrieval(
         test_song.measures[0],
@@ -196,5 +195,5 @@ for complexity_weight, difficulty_weight in [[1, 1], [0, 0], [-1, -1], [1, -1],
         assert retrieved_measures[0].id == sorted_candidate_test_set[0].id
 
 database.load()
-database.data.keys()
+list(database.data.keys())
 #database.retrieve_entry_data()

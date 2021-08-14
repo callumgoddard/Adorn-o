@@ -7,7 +7,7 @@ Functions to read and gather data from the API data structures
 # 3rd party imports
 
 # Local application imports
-import datatypes
+from . import datatypes
 from .. import utilities
 
 
@@ -61,7 +61,7 @@ def read_all_adorned_notes_in_a_song(song):
     [<list of nth measure's notes>],
     ]
     '''
-    return map(lambda m: m.notes, song.measures)
+    return [m.notes for m in song.measures]
 
 
 def read_all_note_durations(song_or_measure, tied_notes='combine'):
@@ -70,7 +70,7 @@ def read_all_note_durations(song_or_measure, tied_notes='combine'):
     '''
     basic_data = read_basic_note_data(song_or_measure, tied_notes)
 
-    note_durations = map(lambda d: d[2], basic_data)
+    note_durations = [d[2] for d in basic_data]
 
     return note_durations
 
@@ -81,7 +81,7 @@ def read_all_note_dynamics(song_or_measure, tied_notes='combine'):
     '''
     basic_data = read_basic_note_data(song_or_measure, tied_notes)
 
-    note_dynamics = map(lambda d: d[3], basic_data)
+    note_dynamics = [d[3] for d in basic_data]
 
     return note_dynamics
 
@@ -93,8 +93,8 @@ def read_all_note_dynamics_as_velocities(song_or_measure,
     '''
     basic_data = read_basic_note_data(song_or_measure, tied_notes)
 
-    note_dynamics = map(lambda d: d[3][0], basic_data)
-    return map(lambda v: utilities.dynamics_inv.get(v), note_dynamics)
+    note_dynamics = [d[3][0] for d in basic_data]
+    return [utilities.dynamics_inv.get(v) for v in note_dynamics]
 
 
 def read_basic_note_data(api_data, tied_notes='combine'):

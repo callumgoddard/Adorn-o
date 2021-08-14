@@ -100,9 +100,9 @@ def dict_to_Measure(measure_dict):
 
     notes = []
     for note in measure_dict['notes']:
-        if u'rest' in note.keys():
+        if 'rest' in list(note.keys()):
             notes.append(dict_to_Rest(note))
-        elif u'adorned_note' in note.keys():
+        elif 'adorned_note' in list(note.keys()):
             notes.append(dict_to_AdornedNote(note))
 
     return datatypes.Measure(

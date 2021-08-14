@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 from fractions import Fraction
 
@@ -18,7 +18,7 @@ test_song = api_test_song[0]
 
 
 def get_adornment_list(adorned_notelist):
-    return map(lambda an: an.adornment, adorned_notelist)
+    return [an.adornment for an in adorned_notelist]
 
 
 def test_select_best_adornment_for_unadorned_note(
@@ -653,9 +653,7 @@ pos_adornments = cbr.reuse_module.make_all_possible_adornments(
     difficulty_weight=1,
     gp5_wellformedness=True)
 
-assert 'dead-note' not in map(
-    lambda x: x.fretting.modification.type,
-    pos_adornments), "dead-note found when hammer-on/pull-off"
+assert 'dead-note' not in [x.fretting.modification.type for x in pos_adornments], "dead-note found when hammer-on/pull-off"
 
 # Testing Tap:
 dynamics = [Dynamic('mf', None)]
@@ -714,29 +712,20 @@ pos_adornments = cbr.reuse_module.make_all_possible_adornments(
 
 #print(pos_adornments)
 
-assert fretting_modulations_trill[0] not in map(
-    lambda x: x.fretting.modulation.trill,
-    pos_adornments), "trill found when tap"
+assert fretting_modulations_trill[0] not in [x.fretting.modulation.trill for x in pos_adornments], "trill found when tap"
 
-assert 'natural-harmonic' not in map(
-    lambda x: x.fretting.modification.type,
-    pos_adornments), "natural-harmonic found when tap"
+assert 'natural-harmonic' not in [x.fretting.modification.type for x in pos_adornments], "natural-harmonic found when tap"
 
-for ah in map(lambda x: x.plucking.modification.artificial_harmonic,
-              pos_adornments):
+for ah in [x.plucking.modification.artificial_harmonic for x in pos_adornments]:
     assert ah == None, "artificial_harmonic found when tap"
 
-assert fretting_modulations_slide[0] in map(
-    lambda x: x.fretting.modulation.slide,
-    pos_adornments), "Slide not found when tap"
+assert fretting_modulations_slide[0] in [x.fretting.modulation.slide for x in pos_adornments], "Slide not found when tap"
 
 for bend in fretting_modulations_bend:
-    assert bend in map(lambda x: x.fretting.modulation.bend,
-                       pos_adornments), "Bend not found when tap"
+    assert bend in [x.fretting.modulation.bend for x in pos_adornments], "Bend not found when tap"
 
 for vib in fretting_modulations_vib:
-    assert vib in map(lambda x: x.fretting.modulation.vibrato,
-                      pos_adornments), "Vibrato not found when tap"
+    assert vib in [x.fretting.modulation.vibrato for x in pos_adornments], "Vibrato not found when tap"
 
 # Testing Trill:
 dynamics = [Dynamic('mf', None)]
@@ -937,16 +926,14 @@ adorned_measure = test_song.measures[10]
 out = cbr.reuse_module.chunk_up_a_measure(unadorned_measure)
 
 for chunk, ans in zip(out, [[1, 2, 3], [2, 3, 5], [3, 5, 6]]):
-    assert map(lambda us: us.note.note_number,
-               chunk) == ans, "Chunk done wrong"
+    assert [us.note.note_number for us in chunk] == ans, "Chunk done wrong"
 
 unadorned_measure = test_song.measures[0]
 out = cbr.reuse_module.chunk_up_a_measure(unadorned_measure, chunk_size=3)
 
 for chunk, ans in zip(out, [[1]]):
-    print(map(lambda us: us.note.note_number, chunk))
-    assert map(lambda us: us.note.note_number,
-               chunk) == ans, "Chunk done wrong"
+    print([us.note.note_number for us in chunk])
+    assert [us.note.note_number for us in chunk] == ans, "Chunk done wrong"
 
 unadorned_measure = test_song.measures[9]
 unadorned_measure_notes = parser.API.calculate_functions.calculate_tied_note_durations(
@@ -961,10 +948,9 @@ unadorned_chunks, matched = cbr.reuse_module.match_up_unadorned_measure_chunks_w
 
 for ua_chunk, matched_chunks in zip(unadorned_chunks, matched):
 
-    ua_chunk_notes = map(lambda us: us.note.note_number, ua_chunk)
+    ua_chunk_notes = [us.note.note_number for us in ua_chunk]
     for matched_chunk in matched_chunks:
-        matched_chunk_notes = map(lambda us: us.note.note_number,
-                                  matched_chunk)
+        matched_chunk_notes = [us.note.note_number for us in matched_chunk]
         print(ua_chunk_notes, matched_chunk_notes)
         assert ua_chunk_notes == matched_chunk_notes, "Matched sequences are incorrect"
 
@@ -977,10 +963,9 @@ unadorned_chunks, matched = cbr.reuse_module.match_up_unadorned_measure_chunks_w
 
 for ua_chunk, matched_chunks in zip(unadorned_chunks, matched):
 
-    ua_chunk_notes = map(lambda us: us.note.note_number, ua_chunk)
+    ua_chunk_notes = [us.note.note_number for us in ua_chunk]
     for matched_chunk in matched_chunks:
-        matched_chunk_notes = map(lambda us: us.note.note_number,
-                                  matched_chunk)
+        matched_chunk_notes = [us.note.note_number for us in matched_chunk]
         print(ua_chunk_notes, matched_chunk_notes)
         assert ua_chunk_notes == matched_chunk_notes, "Matched sequences are incorrect"
 
@@ -993,17 +978,16 @@ unadorned_chunks, matched = cbr.reuse_module.match_up_unadorned_measure_chunks_w
 
 for ua_chunk, matched_chunks in zip(unadorned_chunks, matched):
 
-    ua_chunk_pitches = map(lambda us: us.note.pitch, ua_chunk)
-    ua_chunk_fret = map(lambda us: us.note.fret_number, ua_chunk)
-    ua_chunk_string = map(lambda us: us.note.string_number, ua_chunk)
+    ua_chunk_pitches = [us.note.pitch for us in ua_chunk]
+    ua_chunk_fret = [us.note.fret_number for us in ua_chunk]
+    ua_chunk_string = [us.note.string_number for us in ua_chunk]
     for matched_chunk in matched_chunks:
         print(ua_chunk_notes)
         print(matched_chunk)
 
-        matched_chunk_pitches = map(lambda us: us.note.pitch, matched_chunk)
-        matched_chunk_fret = map(lambda us: us.note.fret_number, matched_chunk)
-        matched_chunk_string = map(lambda us: us.note.string_number,
-                                   matched_chunk)
+        matched_chunk_pitches = [us.note.pitch for us in matched_chunk]
+        matched_chunk_fret = [us.note.fret_number for us in matched_chunk]
+        matched_chunk_string = [us.note.string_number for us in matched_chunk]
         print(ua_chunk_notes, matched_chunk_notes)
         assert ua_chunk_pitches == matched_chunk_pitches, "Matched sequences are incorrect"
         assert ua_chunk_fret == matched_chunk_fret, "Matched sequences are incorrect"
@@ -1015,10 +999,9 @@ unadorned_chunks, matched = cbr.reuse_module.match_up_unadorned_measure_chunks_w
 for ua_chunk, matched_chunks, ans in zip(unadorned_chunks, matched,
                                          [[4, 5, 6], [1, 2, 4], [1, 2, 4]]):
 
-    ua_chunk_notes = map(lambda us: us.note.note_number, ua_chunk)
+    ua_chunk_notes = [us.note.note_number for us in ua_chunk]
     for matched_chunk in matched_chunks:
-        matched_chunk_notes = map(lambda us: us.note.note_number,
-                                  matched_chunk)
+        matched_chunk_notes = [us.note.note_number for us in matched_chunk]
         print(ua_chunk_notes, matched_chunk_notes)
         assert matched_chunk_notes == ans, "Matched sequences are incorrect"
 
@@ -1037,9 +1020,7 @@ for note, ans in zip(
     #    lambda us: us.note.note_number,
     #    note.adorned_notes))
     #print(ans[1])
-    assert map(
-        lambda us: us.note.note_number,
-        note.adorned_notes) == ans[1], "adorned notes consolidated wrong"
+    assert [us.note.note_number for us in note.adorned_notes] == ans[1], "adorned notes consolidated wrong"
 
 # Testing the full reuse function:
 test_full_functions = False
@@ -1065,32 +1046,29 @@ unadorned_measure = test_song.measures[1]
 out = cbr.reuse_module.chunk_up_a_measure(unadorned_measure, chunk_size=1)
 
 for chunk, ans in zip(out, [[1], [2], [3], [4]]):
-    print(map(lambda us: us.note.note_number, chunk))
-    assert map(lambda us: us.note.note_number,
-               chunk) == ans, "Chunk done wrong"
+    print([us.note.note_number for us in chunk])
+    assert [us.note.note_number for us in chunk] == ans, "Chunk done wrong"
 
 # testing chunk sizes of 2
 unadorned_measure = test_song.measures[1]
 out = cbr.reuse_module.chunk_up_a_measure(unadorned_measure, chunk_size=2)
 
 for chunk, ans in zip(out, [[1, 2], [2, 3], [3, 4]]):
-    print(map(lambda us: us.note.note_number, chunk))
-    assert map(lambda us: us.note.note_number,
-               chunk) == ans, "Chunk done wrong"
+    print([us.note.note_number for us in chunk])
+    assert [us.note.note_number for us in chunk] == ans, "Chunk done wrong"
 
 most_similar = cbr.reuse_module.find_most_similar_notes(
     [test_song.measures[0].notes[0]], test_song.measures[1])
 
 for notes in most_similar:
-    print(map(lambda us: us.note.note_number, notes))
+    print([us.note.note_number for us in notes])
 
 con_test = cbr.reuse_module.consolidate_note_sequnces_matches_to_note_matches(
     [[test_song.measures[0].notes[0]]], [most_similar])
 
 assert len(con_test) == 1
 assert con_test[0].unadorned_note == test_song.measures[0].notes[0]
-assert map(lambda us: us.note.note_number,
-           con_test[0].adorned_notes) == [1, 2, 3, 4]
+assert [us.note.note_number for us in con_test[0].adorned_notes] == [1, 2, 3, 4]
 
 # Test harmonics:
 unadorned_measure = test_song.measures[11]

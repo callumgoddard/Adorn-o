@@ -14,15 +14,17 @@ import random
 # 3rd party imports
 import guitarpro
 from midiutil.MidiFile import *
+import pretty_midi
 import matlab.engine
 
 # Local application imports
-from update_functions import *
-from datatypes import *
+from .update_functions import *
+from .datatypes import *
 from .. import utilities
-import read_functions
+from . import read_functions
 
 from evaluation import musiplectics
+from functools import reduce
 
 
 def calculate_measure_duration(measure):
@@ -142,9 +144,9 @@ def calculate_duration_for_notes_in_measure(measure):
             dur_note = calculate_note_duration(note.note,
                                                event_times[event_num + 1])
             if dur_note == Fraction(0, 1):
-                print "Duration 0"
-                print "bar: ", measure.meta_data.number
-                print note
+                print("Duration 0")
+                print("bar: ", measure.meta_data.number)
+                print(note)
             update_note_in_measure(note,
                                    update_adorned_note(note, note=dur_note),
                                    updated_measure)
@@ -153,9 +155,9 @@ def calculate_duration_for_notes_in_measure(measure):
             dur_note = calculate_note_duration(note,
                                                event_times[event_num + 1])
             if dur_note == Fraction(0, 1):
-                print "Duration 0"
-                print "bar: ", measure.meta_data.number
-                print note
+                print("Duration 0")
+                print("bar: ", measure.meta_data.number)
+                print(note)
             update_note_in_measure(note, dur_note, updated_measure)
         '''
         for event_time in event_times:
@@ -449,11 +451,11 @@ def calculate_bars_from_note_list(note_list, song_data):
 
     measure_notes = []
 
-    print "For: ", song_data.meta_data.title
+    print("For: ", song_data.meta_data.title)
 
     for measure in song_data.measures:
         measure_notes = []
-        print "Working out what notes are in measure: ", measure.meta_data.number
+        print("Working out what notes are in measure: ", measure.meta_data.number)
         for adorned_note in note_list:
             if calcuate_note_is_in_measure(adorned_note, measure):
                 measure_notes.append(adorned_note)
@@ -499,6 +501,12 @@ def calculate_midi_file_for_measure_note_list(measure_note_list,
     # set the instrument to electric bass
     program = 33  # to set the instrument to electric finger bass.
     mididata.addProgramChange(track, channel, time, program)
+
+    #pretty_midi 
+
+    midi_data = pretty_midi.PrettyMIDI()
+    bass = pretty_midi.Instrument(program=33)
+
 
     for measure in list_of_measures:
         time = measure.start_time - list_of_measures[0].start_time
@@ -666,14 +674,30 @@ def calculate_midi_file_for_measure_note_list(measure_note_list,
                          midi_note.pitch, float(midi_note.time),
                          float(midi_note.duration), midi_note.volume)
 
+        # Pretty_midi:
+        # Create a Note instance, starting at 0s and ending at .5s
+        note = pretty_midi.Note(
+            velocity=utilities.dynamics_inv.get(adorned_note.note.dynamic.value), 
+            pitch=adorned_note.note.pitch, start=start_time * 4, 
+            end= (start_time * 4 + adorned_note.note.duration * 4))
+        
+        # Add it to the bass instrument
+        bass.notes.append(note)
+
     try:
         # write out the midi file:
         with open(midi_file_name + '.mid', 'wb') as binfile:
             mididata.writeFile(binfile)
             return midi_file_name + '.mid'
     except:
-        print('midi files not made')
-        return False
+        print('midi files not made..')
+        print('trying pretty_midi')
+        try:
+            midi_data.instruments.append(bass)
+            midi_data.write(midi_file_name + '.mid')
+            return midi_file_name + '.mid'
+        except:
+            return False
 
 
 # TODO: Check if a note overlaps a bar so the correct
@@ -728,14 +752,14 @@ def calculate_midi_files(song_data,
         if monophonic_only:
             # Check the measure is monophonic:
             if not measure.meta_data.monophonic:
-                print "Measure %d is not monophonic and is being skipped" % (
-                    measure_count)
+                print("Measure %d is not monophonic and is being skipped" % (
+                    measure_count))
                 continue
 
         if by_bar:
             if len(bar_list[measure_count - 1]) == 0:
-                print "Measure %d has not notes and is being skipped" % (
-                    measure_count)
+                print("Measure %d has not notes and is being skipped" % (
+                    measure_count))
                 continue
 
             # setup a new midi file:
@@ -881,7 +905,7 @@ def calculate_rhy_file_for_measure(measure,
     time_sig = measure.meta_data.time_signature
 
     if time_sig not in valid_time_sigs and convert_incompatable_time_sigs:
-        if time_sig in equivalent_time_sigs.keys():
+        if time_sig in list(equivalent_time_sigs.keys()):
             time_sig, tpq_mod = equivalent_time_sigs.get(time_sig)
     else:
         tpq_mod = 1
@@ -909,23 +933,24 @@ def calculate_rhy_file_for_measure(measure,
     # Format the measure in .rhy velocity format
     measure = []
     # first fill it with 0's on each tick
-    for x in range(0, ticksperbar):
+    for x in range(0, int(ticksperbar)):
         measure.append(0)
     # then for every time, velocity pair write the velocity
     # into the right tick in the measure
     for time, vel in bar_velocities:
-        measure[time] = vel
+        
+        measure[int(time)] = vel
 
     # convert to string and remove square brackets
     measure = str(measure).replace("[", "")
     measure = str(measure).replace("]", "")
 
-    with open(rhy_file_name, 'wb') as rhythm_file:
+    with open(rhy_file_name, 'w') as rhythm_file:
 
         # write time sig and ticks per quaternote values to the .rhy file.
-        rhythm_file.write('T{' + str(time_sig) + '} # time-signature\n')
+        rhythm_file.write('T\{' + str(time_sig) + '\} # time-signature\n')
         rhythm_file.write('TPQ{' + str(tpq) + '} #ticks per quaternote\n')
-        rhythm_file.write('V{' + measure + '}\n')
+        rhythm_file.write('V{' + str(measure) + '}\n')
 
     return rhy_file_name
 
@@ -1001,7 +1026,7 @@ def calculate_rhy_file_for_song(input_data,
         time_sig = input_data.measures[measure_count].meta_data.time_signature
 
         if time_sig not in valid_time_sigs and convert_incompatable_time_sigs:
-            if time_sig in equivalent_time_sigs.keys():
+            if time_sig in list(equivalent_time_sigs.keys()):
                 time_sig, tpq_mod = equivalent_time_sigs.get(time_sig)
         else:
             tpq_mod = 1
@@ -1010,7 +1035,7 @@ def calculate_rhy_file_for_song(input_data,
         time_sig_num = str(time_sig).split('/')[0]
         time_sig_den = str(time_sig).split('/')[1]
 
-        ticksperbar = (int(time_sig_num) * tpq * 4) / (int(time_sig_den))
+        ticksperbar = int((int(time_sig_num) * tpq * 4) / (int(time_sig_den)))
 
         for adorned_note in bar_list[measure_count]:
             # convert the start time into number of 1/4 notes
@@ -1023,7 +1048,7 @@ def calculate_rhy_file_for_song(input_data,
             # and normalise it
             vel = utilities.dynamics_inv.get(
                 adorned_note.note.dynamic.value) / max(note_velocities)
-            bar_velocities.append([st, vel])
+            bar_velocities.append([int(st), vel])
 
         # Format the measure in .rhy velocity format
         measure = []
@@ -1656,14 +1681,14 @@ def calculate_triplet_feel_note_durations(input_data):
                 calculate_time_sig_numerator(
                     measure.meta_data.time_signature)):
             downbeats += [(x * down_beat_value) + measure.start_time]
-        print "downbeats: ", downbeats
+        print("downbeats: ", downbeats)
 
         # work out the non-adjusted start_times of the
         # notes that fall in the triplet feel and need adjusting
         triplet_feel_beats = []
         triplet_feel_beats = list(
-            map(lambda x: x + triplet_feel_value, downbeats))
-        print triplet_feel_beats
+            [x + triplet_feel_value for x in downbeats])
+        print(triplet_feel_beats)
 
         for event in measure.notes:
             # check if the note is a rest or adorned_note
@@ -2279,7 +2304,7 @@ def calculate_chord_fret_relationships(chord_dict):
             ]
     '''
 
-    keys = chord_dict.keys()
+    keys = list(chord_dict.keys())
 
     chord_fret_relations = []
 
@@ -2314,9 +2339,9 @@ def calculate_lowest_fret_note(current_beat_chord, current_beat_notes):
     based upon the current_beat_chord list.
     '''
 
-    print current_beat_chord
+    print(current_beat_chord)
     current_beat_lowest_fret = calculate_lowest_fret(current_beat_chord)
-    print current_beat_lowest_fret
+    print(current_beat_lowest_fret)
     for current_beat_note in current_beat_notes:
         if (current_beat_note.note.fret_number == current_beat_lowest_fret[1]
                 and current_beat_note.note.string_number ==
@@ -2790,7 +2815,7 @@ def calculate_playing_complexity(input_data,
         if song is None:
             song = input_data
         else:
-            print "Both song and input_data have been specified, using only input_data"
+            print("Both song and input_data have been specified, using only input_data")
             song = input_data
 
         # calculated the tied note_durations
@@ -2819,7 +2844,7 @@ def calculate_playing_complexity(input_data,
         #if by_bar is True:
         # no list is specified so make the range number of measures
         # that have note lists.
-        measures_to_process = range(0, len(note_list_for_each_measure))
+        measures_to_process = list(range(0, len(note_list_for_each_measure)))
     if isinstance(input_data, Song) or isinstance(input_data, list):
         for measure_number in measures_to_process:
             # skip non-monophonic measures:
@@ -2843,7 +2868,7 @@ def calculate_playing_complexity(input_data,
             time_sig = song.measures[measure_number].meta_data.time_signature
 
             # if the time sig doesn't have a complexity weight skip the measure
-            if time_sig not in musiplectics.time_sig_weights().keys():
+            if time_sig not in list(musiplectics.time_sig_weights().keys()):
                 continue
 
             bpm = song.measures[measure_number].meta_data.tempo
@@ -3463,7 +3488,7 @@ def calculate_playing_complexity(input_data,
         time_sig = measure.meta_data.time_signature
 
         # if the time sig doesn't have a complexity weight skip the measure
-        if time_sig not in musiplectics.time_sig_weights().keys():
+        if time_sig not in list(musiplectics.time_sig_weights().keys()):
             return
 
         bpm = measure.meta_data.tempo
@@ -4077,9 +4102,9 @@ def calculate_playing_complexity_study(song,
 
         # Check the measure is monophonic:
         if not song.measures[measure_count].meta_data.monophonic:
-            print "Measure is not monophonic, no interval complexity can be calculated..."
+            print("Measure is not monophonic, no interval complexity can be calculated...")
             if monophonic_only:
-                print "Skipping polyphonic measure...."
+                print("Skipping polyphonic measure....")
                 measure_count += 1
 
         # then calculate the musiplectics score:
@@ -4520,7 +4545,7 @@ def calculate_adornment_to_note_ratio(input_data, technique):
     if isinstance(input_data, Measure):
         for adorned_note in measure.notes:
             # read the technique:
-            print
+            print()
 
     return technique_count / total_notes
 
@@ -4562,14 +4587,14 @@ def calculate_entropy(feature_dict, base=None):
     # feature_dict into probabilities:
     feature_dict_probabilities = {}
 
-    for key in feature_dict.keys():
+    for key in list(feature_dict.keys()):
         feature_dict_probabilities[key + '_prob'] = (
             float(feature_dict.get(key)) / float(sum(feature_dict.values())))
 
     # calculate the entropy:
     entropy = 0
 
-    for prob in feature_dict_probabilities.values():
+    for prob in list(feature_dict_probabilities.values()):
         base = 2 if base is None else base
         entropy -= prob * log(prob, base)
 
@@ -4672,13 +4697,13 @@ def calculate_features(song):
     # Here the rate and density for each adornement is calculated
     # and the entropy for each group of techniques applied to a note
 
-    print calculate_entropy(techniques)
-    print calculate_entropy(modifications)
-    print calculate_entropy(plucking_accents)
-    print calculate_entropy(fretting_accents)
-    print calculate_entropy(modulations)
-    print calculate_entropy(dynamics)
-    print calculate_entropy(fret_postions)
+    print(calculate_entropy(techniques))
+    print(calculate_entropy(modifications))
+    print(calculate_entropy(plucking_accents))
+    print(calculate_entropy(fretting_accents))
+    print(calculate_entropy(modulations))
+    print(calculate_entropy(dynamics))
+    print(calculate_entropy(fret_postions))
 
     # Calculate the rate: feature count / total_notes
     total_notes = len(note_list)
@@ -4686,7 +4711,7 @@ def calculate_features(song):
     total_duration = calculate_song_duration(song)
 
     features = {}
-    for feature in feature_type_dict.keys():
+    for feature in list(feature_type_dict.keys()):
 
         # Calculate the rate: feature count / total_notes
         features[feature + '_rate'] = float(
@@ -4695,7 +4720,7 @@ def calculate_features(song):
         features[feature + '_density'] = float(
             feature_type_dict[feature]) / float(total_duration)
 
-    print features
+    print(features)
     return features
 
 
@@ -4806,7 +4831,7 @@ def calculate_feature_table(song):
 
     feature_row = default_row
     feature_row[csv_header.index('file.id')] = str(song.meta_data.title)
-    for feature in song_features.keys():
+    for feature in list(song_features.keys()):
         feature_row[csv_header.index(feature)] = song_features.get(feature)
     csv_file.append(feature_row)
 
@@ -4862,7 +4887,7 @@ def calculate_features_table_multiple_songs(rows):
 
 def calculate_physical_model_note_structures(
         input_data,
-        matlab_engine=matlab.engine.start_matlab(),
+        matlab_engine=None,
         round_decimals=4,
         calculated_tied_notes=True,
         calculate_grace_notes=True):
@@ -4884,6 +4909,9 @@ def calculate_physical_model_note_structures(
     """
 
     assert isinstance(input_data, Song), ("input_data must be a Song")
+    
+    if matlab_engine is None:
+        matlab_engine = matlab.engine.start_matlab()
 
     # Add the physical model functions to matlab path
     p = matlab_engine.genpath('/Users/cg306/Documents/MATLAB')
@@ -5019,13 +5047,13 @@ def calculate_physical_model_note_structures(
                     if adorned_note.note.dynamic[1] == 'dim':
                         if cres_dim_starting_dynamic != 'ppp':
                             cres_dim_ending_dynamic = dynamic_to_pm_dB[
-                                dynamic_to_pm_dB.keys().index(
+                                list(dynamic_to_pm_dB.keys()).index(
                                     cres_dim_starting_dynamic) + 1]
 
                     if adorned_note.note.dynamic[1] == 'cresc':
                         if cres_dim_starting_dynamic != 'fff':
                             cres_dim_ending_dynamic = dynamic_to_pm_dB[
-                                dynamic_to_pm_dB.keys().index(
+                                list(dynamic_to_pm_dB.keys()).index(
                                     cres_dim_starting_dynamic) - 1]
                             dynamic_dB_dif = (
                                 dynamic_to_pm_dB[cres_dim_starting_dynamic] -

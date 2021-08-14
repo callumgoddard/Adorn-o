@@ -1,7 +1,7 @@
-'''
+"""
 Interface for SynPy:
 https://code.soundsoftware.ac.uk/projects/syncopation-dataset
-'''
+"""
 
 # Standard library imports
 import csv
@@ -21,42 +21,50 @@ import pandas as pd
 
 
 features_list_all = [
-    'source', 'model_name', 'syncopation_by_bar', 'number_of_bars',
-    'summed_syncopation', 'mean_syncopation_per_bar', 'bars_with_valid_output',
-    'bars_without_valid_output', 'number_of_bars_not_measured'
+    "source",
+    "model_name",
+    "syncopation_by_bar",
+    "number_of_bars",
+    "summed_syncopation",
+    "mean_syncopation_per_bar",
+    "bars_with_valid_output",
+    "bars_without_valid_output",
+    "number_of_bars_not_measured",
 ]
 
-models_all = ['PRS', 'KTH', 'LHL', 'SG', 'TMC', 'TOB', 'WNBD']
+models_all = ["PRS", "KTH", "LHL", "SG", "TMC", "TOB", "WNBD"]
 
 txt2models = {
-    'PRS': PRS,
-    'KTH': KTH,
-    'LHL': LHL,
-    'SG': SG,
-    'TMC': TMC,
-    'TOB': TOB,
-    'WNBD': WNBD
+    "PRS": PRS,
+    "KTH": KTH,
+    "LHL": LHL,
+    "SG": SG,
+    "TMC": TMC,
+    "TOB": TOB,
+    "WNBD": WNBD,
 }
 
 # to parse a json file:
 # http://python-guide-pt-br.readthedocs.io/en/latest/scenarios/json/
 
 
-def compute_features(file, features=['mean_syncopation_per_bar'], models=models_all, bar=None):
+def compute_features(
+    file, features=["mean_syncopation_per_bar"], models=models_all, bar=None
+):
 
     synpy_bars = None
 
     syncopation_features = []
-    file_name = os.path.split(file)[1].split('.')[0]
+    file_name = os.path.split(file)[1].split(".")[0]
 
     if bar is not None:
         synpy_bars = synpy.rhythm_parser.read_rhythm(file)
 
-        syncopation_features.append(file_name+"_bar_"+str(bar))
+        syncopation_features.append(file_name + "_bar_" + str(bar))
 
         for m in models:
             try:
-                s = synpy.calculate_syncopation(txt2models.get(m), synpy_bars[bar-1])
+                s = synpy.calculate_syncopation(txt2models.get(m), synpy_bars[bar - 1])
             except:
                 "Error cannot analyse %i of %s file" % (bar, file_name)
                 s = {}
@@ -86,19 +94,21 @@ def compute_features(file, features=['mean_syncopation_per_bar'], models=models_
     return syncopation_features
 
 
-def make_feature_table(RHY_files,
-                       output='synpy_features.csv',
-                       features=['mean_syncopation_per_bar'],
-                       models=models_all,
-                       save=True,
-                       byBar=True):
+def make_feature_table(
+    RHY_files,
+    output="synpy_features.csv",
+    features=["mean_syncopation_per_bar"],
+    models=models_all,
+    save=True,
+    byBar=True,
+):
 
     header = []
-    header.append('file.id')
+    header.append("file.id")
 
     for m in models:
         for f in features:
-            col_title = m + '.' + f
+            col_title = m + "." + f
             header.append(col_title)
 
     data = []
@@ -118,15 +128,17 @@ def make_feature_table(RHY_files,
             else:
                 data.append(compute_features(f, features, models))
 
-    elif type(RHY_files) == str or type(RHY_files) == unicode:
+    elif type(RHY_files) == str or type(RHY_files) == str:
         if byBar:
             bars = synpy.rhythm_parser.read_rhythm(RHY_files)
             bar_count = 0
             for bar in bars:
                 bar_count += 1
-                synpy_data = compute_features(RHY_files, features, models, barRange=[bar_count-1, bar_count])
+                synpy_data = compute_features(
+                    RHY_files, features, models, barRange=[bar_count - 1, bar_count]
+                )
                 # update the file id to include bar numbers:
-                #synpy_data[0] = synpy_data[0]+"_bar_" + str(bar_count)
+                # synpy_data[0] = synpy_data[0]+"_bar_" + str(bar_count)
                 data.append(synpy_data)
 
         else:
@@ -136,8 +148,8 @@ def make_feature_table(RHY_files,
     df = pd.DataFrame(data[1:], columns=data[0])
 
     if save is True:
-        with open(output, 'wb') as csvfile:
-            synpywriter = csv.writer(csvfile, delimiter=',')
+        with open(output, "wb") as csvfile:
+            synpywriter = csv.writer(csvfile, delimiter=",")
             for row in data:
                 synpywriter.writerow(row)
     # df.to_csv('test.csv')

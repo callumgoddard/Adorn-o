@@ -4,7 +4,7 @@ API functions to update data within the API
 #from __future__ import division, print_function, absolute_import
 
 # Local Application Imports
-import datatypes
+from . import datatypes
 
 
 def update_rest(rest, **field_values_pairs):

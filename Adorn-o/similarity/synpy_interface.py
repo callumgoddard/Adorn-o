@@ -42,7 +42,7 @@ def compute_features(file, features=features_list_all, models=models_all):
     syncopation_features = []
     syncopation_features.append(file_name)
 
-    print file_name
+    print(file_name)
     for m in models:
         s = synpy.calculate_syncopation(txt2models.get(m), file)
         for f in features:
@@ -108,7 +108,7 @@ def main():
     file_name = file.split('.')[0]
     output_folder = '/examples/'
 
-    print output_folder + file_name + '-PRS.json'
+    print(output_folder + file_name + '-PRS.json')
     make_feature_table('out.rhy')
 
     # output of each funtion is a dictionary.

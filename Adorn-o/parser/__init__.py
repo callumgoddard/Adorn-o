@@ -1,7 +1,7 @@
 #import gpfile
 #import gp
 #import score
-import utilities
+from . import utilities
 #import caseCSV
-import songdata
-import song
+#import songdata
+#import song

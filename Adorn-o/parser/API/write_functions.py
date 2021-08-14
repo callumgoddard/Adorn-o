@@ -10,9 +10,9 @@ import json
 import guitarpro
 
 # Local application imports
-import datatypes
+from . import datatypes
 import parser.utilities as utilities
-import dict_conversion as api2dict
+from . import dict_conversion as api2dict
 
 
 def api_to_json(api_song):

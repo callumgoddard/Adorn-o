@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 import os.path
 import os
@@ -31,14 +31,14 @@ api_song = parser.API.get_functions.get_song_data(gp5song)
 test_song = api_song[0]
 
 test_database.load()
-assert len(test_database.data.keys()) == 23
+assert len(list(test_database.data.keys())) == 23
 
 data = test_database.load_data_as_lists()
 sorted_data = test_database.sort(
     complexity_weight=0, difficulty_weight=0, save=False)
 # check there are no duplicate entries added:
-data_file_ids = map(lambda d: d[0], data[1:])
-sorted_file_ids = map(lambda d: d[0], sorted_data)
+data_file_ids = [d[0] for d in data[1:]]
+sorted_file_ids = [d[0] for d in sorted_data]
 
 assert data_file_ids == sorted_file_ids
 assert len(sorted_file_ids) == len(set(sorted_file_ids))
@@ -49,7 +49,7 @@ assert len(sorted_file_ids) == len(set(sorted_file_ids))
 
 # reload the database:
 test_database.load()
-assert len(test_database.data.keys()) == 23
+assert len(list(test_database.data.keys())) == 23
 
 test_database.add_entries_from_gp5_file(
     "./gp5files/one_note.gp5",
@@ -60,7 +60,7 @@ test_database.add_entries_from_gp5_file(
 
 # reload the database:
 test_database.load()
-assert len(test_database.data.keys()) == 23 + 4
+assert len(list(test_database.data.keys())) == 23 + 4
 
 # Read in the file:
 gp5_file = "./gp5files/one_note.gp5"
@@ -118,7 +118,7 @@ test_database.add_entries_from_gp5_file(
     artist_and_title_from_file_name=False)
 
 test_database.load()
-assert len(test_database.data.keys()) == 23 + 4 + 1
+assert len(list(test_database.data.keys())) == 23 + 4 + 1
 
 most_sim = test_database.find_most_similar(test_song.measures[0])
 sorted_most_sim = test_database.sort_candidate_set(
@@ -131,15 +131,15 @@ if os.path.isfile(test_database.save_folder + "/" + "sorted.txt"):
     os.remove(test_database.save_folder + "/" + "sorted.txt")
 
 retrieved_true = test_database.retrieve_data_from_multiple_entries(
-    test_database.data.keys(), True)
+    list(test_database.data.keys()), True)
 retrieved_false = test_database.retrieve_data_from_multiple_entries(
-    test_database.data.keys(), False)
+    list(test_database.data.keys()), False)
 
-assert len(retrieved_true) == len(test_database.data.keys())
-assert len(retrieved_false) == len(test_database.data.keys())
+assert len(retrieved_true) == len(list(test_database.data.keys()))
+assert len(retrieved_false) == len(list(test_database.data.keys()))
 
 for r_t, r_f in zip(retrieved_true, retrieved_false):
-    assert r_t[0] in test_database.data.keys()
+    assert r_t[0] in list(test_database.data.keys())
     assert isinstance(r_t[1], parser.API.datatypes.Measure)
     assert isinstance(r_t, cbr.database.retieved)
     assert isinstance(r_f, parser.API.datatypes.Measure)
@@ -157,7 +157,7 @@ json_test_database.add_entries_from_list_of_json_files(
     artist_and_title_from_file_name=False)
 
 json_test_database.load()
-assert len(json_test_database.data.keys()) == 23
+assert len(list(json_test_database.data.keys())) == 23
 for fname in [
         "./test_database_json/json/c.json", "./test_database_json/json/r.json",
         "./test_database_json/json/h-official.json",

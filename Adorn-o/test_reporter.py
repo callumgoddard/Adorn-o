@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 from cbr import Database
 
@@ -28,7 +28,7 @@ threshold = database.virtuosity_threshold(
 print(threshold.pieces)
 print(len(threshold.pieces))
 
-print(map(lambda p: p.id, threshold.pieces))
+print([p.id for p in threshold.pieces])
 """
 database.produce_report(
     input_file,

@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 from collections import namedtuple
 import warnings
@@ -116,7 +116,7 @@ def retrieve_candidate_data(selected_candidates, database):
 
     unsorted_retrieved_measures = database.retrieve_data_from_multiple_entries(selected_candidates, True)
 
-    unsorted_retrieved_measures_id_list = map(lambda m: m.id, unsorted_retrieved_measures)
+    unsorted_retrieved_measures_id_list = [m.id for m in unsorted_retrieved_measures]
 
     # then match the order of the candidates:
 

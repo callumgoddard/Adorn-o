@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 import glob
 import os.path
@@ -57,7 +57,7 @@ for unadorned_measure in test_song.measures:
         percentile_range=[0, 100])
 
     # get only the adorned_measure data:
-    adorned_measures = map(lambda am: am.measure, candidate_set)
+    adorned_measures = [am.measure for am in candidate_set]
 
     new_measure = cbr.reuse(unadorned_measure, notes_in_measure[measure_note_index], adorned_measures,
                             complexity_weight, difficulty_weight, 'RD',
@@ -107,7 +107,7 @@ for unadorned_measure in test_song.measures:
         percentile_range=[0, 100])
 
     # get only the adorned_measure data:
-    adorned_measures = map(lambda am: am.measure, candidate_set)
+    adorned_measures = [am.measure for am in candidate_set]
 
     new_measure = cbr.reuse(unadorned_measure=unadorned_measure, unadorned_measure_notes=notes_in_measure[measure_note_index], adorned_measures=adorned_measures,
                             complexity_weight=complexity_weight, difficulty_weight=difficulty_weight, weight_set=weight_set,

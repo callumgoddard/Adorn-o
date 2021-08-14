@@ -4,11 +4,11 @@ used within virtuobass.
 '''
 
 
-import calculate_functions
-import datatypes
-import get_functions
-import update_functions
-import convert_functions
-import read_functions
-import write_functions
-import audio_out
+from . import calculate_functions
+from . import datatypes
+from . import get_functions
+from . import update_functions
+from . import convert_functions
+from . import read_functions
+from . import write_functions
+from . import audio_out

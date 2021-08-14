@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 import os
 import csv
@@ -668,8 +668,7 @@ class Database():
                         print("Two note measure...")
                         # get a list of all file.ids of the measures
                         # with 2 notes:
-                        two_note_measures = map(lambda x: x[0],
-                                                two_note_features)
+                        two_note_measures = [x[0] for x in two_note_features]
                         if row[0] in two_note_measures:
                             # its a two note measure
                             tn_index = two_note_measures.index(row[0])
@@ -809,7 +808,7 @@ class Database():
             '2/2', '3/2', '4/2', '2/4', '3/4', '4/4', '5/4', '6/4', '7/4',
             '3/8', '5/8', '6/8', '7/8', '9/8', '12/8', '12/16'
         ]
-        valid_time_sigs += musiplectics.time_sig_weights().keys()
+        valid_time_sigs += list(musiplectics.time_sig_weights().keys())
 
         if measure.meta_data.time_signature not in set(valid_time_sigs):
             print(
@@ -869,7 +868,7 @@ class Database():
 
                         # check to see if the bar is a duplicate
                         # in the database:
-                        for entry_id in self.data.keys():
+                        for entry_id in list(self.data.keys()):
                             if entry[self.header.index(
                                     'complexity'):] == self.data[entry_id][
                                         self.header.index('complexity') - 1:]:
@@ -1201,15 +1200,13 @@ class Database():
         self.load()
 
         if artists == 'all':
-            artists = map(lambda d: d[self.header.index('artist') - 1],
-                          self.data.values())
+            artists = [d[self.header.index('artist') - 1] for d in list(self.data.values())]
             artists = list(set(artists))
         elif not isinstance(artists, list):
             artists = [artists]
 
         if files == 'all':
-            files = map(lambda d: d[self.header.index('file.location') - 1],
-                        self.data.values())
+            files = [d[self.header.index('file.location') - 1] for d in list(self.data.values())]
             files = list(set(files))
         elif not isinstance(files, list):
             files = [files]
@@ -1531,7 +1528,7 @@ class Database():
             'exclude_files', ['none'])
 
         self.load()
-        most_similar_ids = self.data.keys()
+        most_similar_ids = list(self.data.keys())
 
         if measure is not None:
             most_similar_ids = self.find_most_similar(

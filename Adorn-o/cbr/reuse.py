@@ -1,4 +1,4 @@
-from __future__ import division, print_function, absolute_import
+
 
 import os
 from fractions import Fraction
@@ -22,6 +22,7 @@ import parser.utilities as utilities
 import feature_analysis as feature_analysis
 from evaluation import musiplectics
 import cbr
+from functools import reduce
 
 SelectedAdornedMeasure = namedtuple("SelectedAdornedMeasure",
                                     ['measure', 'complexity'])
@@ -420,10 +421,8 @@ def resue_dynamic_adornments(unadorned_measure, adorned_measure):
 
     basic_data = read_basic_note_data(adorned_measure)
 
-    dynamic_info = map(lambda d: [d[1] - adorned_measure.start_time, d[3]],
-                       basic_data)
-    adorned_note_start_times = map(lambda d: d[1] - adorned_measure.start_time,
-                                   basic_data)
+    dynamic_info = [[d[1] - adorned_measure.start_time, d[3]] for d in basic_data]
+    adorned_note_start_times = [d[1] - adorned_measure.start_time for d in basic_data]
     # add accent information to the list:
     note = 0
     new_dynamic_info = []
@@ -646,9 +645,7 @@ def make_basic_notes(list_of_notes):
 
     """
 
-    return map(
-        lambda ad_note: BasicNote(ad_note.note.pitch, ad_note.note.start_time, ad_note.note.duration, ad_note.note.dynamic.value),
-        list_of_notes)
+    return [BasicNote(ad_note.note.pitch, ad_note.note.start_time, ad_note.note.duration, ad_note.note.dynamic.value) for ad_note in list_of_notes]
 
 
 def find_note_sequences(list_of_notes):
@@ -780,7 +777,7 @@ def match_up_unadorned_measure_chunks_with_adorned_measure_chunks(
     matched_unadorned_and_adorned_chunks = []
 
     # check the unadorned chunk sizes.
-    unadored_chunk_sizes = map(lambda chunk: len(chunk), unadorned_chunks)
+    unadored_chunk_sizes = [len(chunk) for chunk in unadorned_chunks]
     unadored_chunk_sizes = list(set(unadored_chunk_sizes))
 
     # Make a dict with the sizes as keys.
@@ -946,7 +943,7 @@ def match_up_unadorned_measure_chunks_with_adorned_measure_chunks(
                                           adorned_chunks_feature_df)
             except:
                 # work out similarity based off of 2 note chunks:
-                if 2 in chunk_size_dict.keys():
+                if 2 in list(chunk_size_dict.keys()):
                     adorned_chunks, adorned_chunk_features = chunk_size_dict[
                         adorned_chunk_size]
                 else:
@@ -1118,9 +1115,7 @@ def match_up_unadorned_measure_chunks_with_adorned_measure_chunks(
     """
 
     del unadorned_chunks
-    return map(
-        lambda mua_a: mua_a[0], matched_unadorned_and_adorned_chunks), map(
-            lambda mua_a: mua_a[1], matched_unadorned_and_adorned_chunks)
+    return [mua_a[0] for mua_a in matched_unadorned_and_adorned_chunks], [mua_a[1] for mua_a in matched_unadorned_and_adorned_chunks]
 
 
 def analyse_two_note_chunk(chunk, chunk_id, measure):
@@ -1454,8 +1449,7 @@ def consolidate_note_sequnces_matches_to_note_matches(unadorned_note_sequences,
             #    matched_chunk = [matched_chunk]
 
             for ua_note, a_note in zip(ua_chunk, matched_chunk):
-                ua_notes_already_matched = map(lambda m: m.unadorned_note,
-                                               matched_notes)
+                ua_notes_already_matched = [m.unadorned_note for m in matched_notes]
                 if ua_note not in ua_notes_already_matched:
                     matched_notes.append(matched_au_a(ua_note, [a_note]))
 
@@ -1464,10 +1458,8 @@ def consolidate_note_sequnces_matches_to_note_matches(unadorned_note_sequences,
                     print("index = ", ua_notes_already_matched.index(ua_note))
 
                     print("has adorned_notes:",
-                          map(
-                              lambda m: m.note.note_number,
-                              matched_notes[ua_notes_already_matched.index(
-                                  ua_note)].adorned_notes))
+                          [m.note.note_number for m in matched_notes[ua_notes_already_matched.index(
+                                  ua_note)].adorned_notes])
 
                     matched_notes[ua_notes_already_matched.index(
                         ua_note)].adorned_notes.append(a_note)
@@ -2356,7 +2348,7 @@ def find_all_possible_adornements(unadorned_note, adorned_notes,
             # artificial harmonic without changing its pitch
             pos_ahs = possible_artificial_harmonic_pitches(
                 unadorned_note.string_tuning)
-            if unadorned_note.pitch in pos_ahs.keys():
+            if unadorned_note.pitch in list(pos_ahs.keys()):
 
                 ah = ArtificialHarmonic(
                     guitarpro.models.Octave(
@@ -2388,8 +2380,8 @@ def find_all_possible_adornements(unadorned_note, adorned_notes,
         if adorned_note.adornment.fretting.modification.type not in fretting_modifications_type:
             if adorned_note.adornment.fretting.modification.type == 'natural-harmonic':
                 # see if the pitch of the note can also be a natural harmonic:
-                if unadorned_note.pitch in possible_natural_harmonic_pitches(
-                        unadorned_note.string_tuning).keys():
+                if unadorned_note.pitch in list(possible_natural_harmonic_pitches(
+                        unadorned_note.string_tuning).keys()):
                     fretting_modifications_type.append(
                         adorned_note.adornment.fretting.modification.type)
                 else:
@@ -2522,8 +2514,8 @@ def find_all_possible_adornements(unadorned_note, adorned_notes,
 def possible_natural_harmonic_pitches(string_tuning):
 
     possible_natural_harmonic_notes = {}
-    for string in string_tuning.keys():
-        for fret in utilities.fret_2_harmonic_interval.keys():
+    for string in list(string_tuning.keys()):
+        for fret in list(utilities.fret_2_harmonic_interval.keys()):
 
             if utilities.fret_2_harmonic_interval[fret] == 'none':
                 continue
@@ -2559,11 +2551,11 @@ def possible_artificial_harmonic_pitches(string_tuning):
     }
 
     possible_artificial_harmonics = {}
-    for string in string_tuning.keys():
+    for string in list(string_tuning.keys()):
         for fret in range(1, 25):
             fundamental = string_tuning[string] + fret
 
-            for ah in artificial_harmonics.keys():
+            for ah in list(artificial_harmonics.keys()):
                 octave = artificial_harmonics[ah][0]
                 interval = artificial_harmonics[ah][1]
                 pitch = fundamental + octave * 12 + interval
