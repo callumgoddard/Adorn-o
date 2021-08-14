@@ -5,13 +5,13 @@ Adorn-o is a computationally creative musical performance system for virtuosic b
 
 ## How to start
 
-Check `Adorn-o/main.py` for examples.
+Check `Adorn_o/main.py` for examples.
 
 ## Requirements
 
 Adorn-o is best run from a virtual environment setup in the root folder. In addition to the python packages required, some additional components need to be downloaded and added.
 
-Once you have added each of these running: `Adorn-o/test_all.py` will test Adorn-o, if the tested complete with no error all requirements are installed correctly.
+Once you have added each of these running: `Adorn_o/test_all.py` will test Adorn-o, if the tested complete with no error all requirements are installed correctly.
 
 ### Python Packages
 
@@ -23,17 +23,17 @@ Synpy is required as part of the musical feature analysis. However the version p
 
 You can download and place the `synpy` folder within the root directory and call:
 ```
-2to3 --output-dir=Adorn-o/synpy -W -n synpy
+2to3 --output-dir=Adorn_o/synpy -W -n synpy
 ```
 
-Which _should_ update and add the synpy files required into the correct location using [2to3](https://docs.python.org/3/library/2to3.html). You may need to correct the the tabs within `Adorn-o/synpy/syncopation.py` as there can be inconsistencies after the 2to3 conversion.
+Which _should_ update and add the synpy files required into the correct location using [2to3](https://docs.python.org/3/library/2to3.html). You may need to correct the the tabs within `Adorn_o/synpy/syncopation.py` as there can be inconsistencies after the 2to3 conversion.
 
 
 ### Adding and Updating FANTASTIC:
 
 The [FANTASTIC](http://doc.gold.ac.uk/isms/mmm/?page=Software%20and%20Documentation) source files from: [http://www.doc.gold.ac.uk/isms/m4s/FANTASTIC.zip](http://www.doc.gold.ac.uk/isms/m4s/FANTASTIC.zip) are required to be extracted to:
 ```
-Adorn-o/feature_analysis/FANTASTIC
+Adorn_o/feature_analysis/FANTASTIC
 ```
 
 Once extracted, the following code is then needed to be added to line 247 of `Adorn-o/feature_analysis/FANTASTIC/Fantastic.R`:
@@ -71,7 +71,7 @@ callums.feature.similarity <- function(df.in = data.frame(),mel.fns=list.files(p
 
 ### Adding the bass guitar digital waveguide
 
-To be able to render audio output the contents of the `waveguide_model` folder from: [https://github.com/callumgoddard/bass_guitar_waveguide_model](https://github.com/callumgoddard/bass_guitar_waveguide_model) are required to be placed within: `Adorn-o/waveguide_model`.
+To be able to render audio output the contents of the `waveguide_model` folder from: [https://github.com/callumgoddard/bass_guitar_waveguide_model](https://github.com/callumgoddard/bass_guitar_waveguide_model) are required to be placed within: `Adorn_o/waveguide_model`.
 
 ## Contact
 
