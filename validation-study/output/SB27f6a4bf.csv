@@ -1,0 +1,2 @@
+file,output_file,weight_set,virtuosity_percentile,similarity_threshold,complexity_weight,difficulty_weight
+../virtuobass/database/input/validation_study_pieces/selected/SB.gp5,./../virtuobass/database/output/SB27f6a4bf.json,RD,99,0,1,1

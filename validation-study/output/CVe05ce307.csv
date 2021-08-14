@@ -1,0 +1,2 @@
+file,output_file,weight_set,virtuosity_percentile,similarity_threshold,complexity_weight,difficulty_weight
+../virtuobass/database/input/validation_study_pieces/selected/CV.gp5,./../virtuobass/database/output/CVe05ce307.json,RD,0,99,-1,0

@@ -1,0 +1,2 @@
+file,output_file,weight_set,virtuosity_percentile,similarity_threshold,complexity_weight,difficulty_weight
+../virtuobass/database/input/validation_study_pieces/selected/TC.gp5,./../virtuobass/database/output/TC7e24ce56.json,RD,99,0,1,1
