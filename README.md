@@ -5,23 +5,74 @@ Adorn-o is a computationally creative musical performance system for virtuosic b
 
 ## How to start
 
-Check `main.py` for examples.
-
+Check `Adorn-o/main.py` for examples.
 
 ## Requirements
-As (currently) no requirements.txt is provided, running `test_all.py` will run the unit tests for Adorn-o. All the main functions are called and the errors produced will highlight what packages you need to have installed. In addtion to this a non-extensive, non-comprehensive list of requirements are as follows:
 
- - MacOS is required as a pre-compiled version of melcov is used. For different operating systems the melconv binary files can likely be replaced with the correctly compiled version, but this has not been tested.
- - Python 2.7 (an update to python 3 is in the works)
- - R 3.2.1 to run the rpy2
- - rpy2 version 2.8.6
- - pyguitarpro: https://github.com/Perlence/PyGuitarPro/releases/tag/v0.5
- - matlab python module
- - [bass_guitar_waveguide_model](https://github.com/callumgoddard/bass_guitar_waveguide_model/) for synthesis of the audio output
- - FANTASTIC (a slightly modified version is provided. Original is found here: http://doc.gold.ac.uk/isms/mmm/?page=Software%20and%20Documentation)
- - synpy (provided but sourced from: https://code.soundsoftware.ac.uk/projects/syncopation-dataset/repository/show/synpy)
- - scipy, numpy and likely a few more....
+Adorn-o is best run from a virtual environment setup in the root folder. In addition to the python packages required, some additional components need to be downloaded and added.
 
+Once you have added each of these running: `Adorn-o/test_all.py` will test Adorn-o, if the tested complete with no error all requirements are installed correctly.
+
+## Python Packages
+
+The required python packages are provided in: `requirements.txt`
+
+
+### Adding and updating Synpy:
+Synpy is required as part of the musical feature analysis. However the version provided here: https://code.soundsoftware.ac.uk/projects/syncopation-dataset/repository/show/synpy needs to be converted to run with python 3.
+
+You can download and place the `synpy` folder within the root directory and call:
+```
+2to3 --output-dir=synpy -W -n Adorn-o/synpy
+```
+
+Which _should_ update and add the synpy files required into the correct location using [2to3](https://docs.python.org/3/library/2to3.html). You may need to correct the the tabs within `synpy/syncopation.py` as these can be  inconsistent after the 2to3 conversion is applied.
+
+older are required to be placed within `Adorn-o/synpy`
+
+### Adding and Updating FANTASTIC:
+
+The [FANTASTIC](http://doc.gold.ac.uk/isms/mmm/?page=Software%20and%20Documentation) source files from: [http://www.doc.gold.ac.uk/isms/m4s/FANTASTIC.zip](http://www.doc.gold.ac.uk/isms/m4s/FANTASTIC.zip) are required to be extracted to:
+```
+Adorn-o/feature_analysis/
+```
+
+Once extracted, the following code is then needed to be added to line 247 of `Adorn-o/feature_analysis/FANTASTIC/Fantastic.R`:
+
+```
+callums.feature.similarity <- function(df.in = data.frame(),mel.fns=list.files(path=dir,pattern=".csv"),dir=".",features=c("p.range","step.cont.glob.var","tonalness","d.eq.trans"),use.segmentation=FALSE,method="euclidean",eucl.stand=TRUE,corpus.dens.list.fn=NULL,average=TRUE){
+  
+  #source("Feature_Similarity.R")
+  require(cluster)
+  
+  # This is the melody features that similarity is calculated on...
+  # can have a dataframe input here...
+  if(length(df.in) == 0){
+    mel.feat <- compute.features(melody.filenames=mel.fns,dir=dir,output="melody.wise",use.segmentation=use.segmentation)
+    }else{
+    mel.feat <-df.in
+  }
+  
+  mel.feat.new <- as.data.frame(mel.feat[,features])
+  
+  
+  row.names(mel.feat.new) <- mel.feat[,"file.id"]
+  colnames(mel.feat.new) <- features
+  sim <- NULL
+  if(average==FALSE){
+    
+    for(i in seq(along=features)){
+      sim[[paste(method,features[i],sep=".")]] <- compute.sim(mel.feat.new[,features[i]],features[i],row.names(mel.feat.new),method,eucl.stand,corpus.dens.list.fn)}
+  }
+  else{sim[["av.sim"]] <- compute.sim(mel.feat.new,features,row.names(mel.feat.new),method,eucl.stand,corpus.dens.list.fn) }
+  
+  sim
+}
+```
+
+### Adding the bass guitar digital waveguide
+
+To be able to render audio output the contents of the `waveguide_model` folder from: [https://github.com/callumgoddard/bass_guitar_waveguide_model](https://github.com/callumgoddard/bass_guitar_waveguide_model) are required to be placed within: `Adorn-o/waveguide_model`.
 
 ## Contact
 
