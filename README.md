@@ -28,7 +28,6 @@ You can download and place the `synpy` folder within the root directory and call
 
 Which _should_ update and add the synpy files required into the correct location using [2to3](https://docs.python.org/3/library/2to3.html). You may need to correct the the tabs within `synpy/syncopation.py` as these can be  inconsistent after the 2to3 conversion is applied.
 
-older are required to be placed within `Adorn-o/synpy`
 
 ### Adding and Updating FANTASTIC:
 
