@@ -13,7 +13,7 @@ Adorn-o is best run from a virtual environment setup in the root folder. In addi
 
 Once you have added each of these running: `Adorn-o/test_all.py` will test Adorn-o, if the tested complete with no error all requirements are installed correctly.
 
-## Python Packages
+### Python Packages
 
 The required python packages are provided in: `requirements.txt`
 
