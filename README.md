@@ -23,7 +23,7 @@ Synpy is required as part of the musical feature analysis. However the version p
 
 You can download and place the `synpy` folder within the root directory and call:
 ```
-2to3 --output-dir=synpy -W -n Adorn-o/synpy
+2to3 --output-dir=Adorn-o/synpy -W -n synpy
 ```
 
 Which _should_ update and add the synpy files required into the correct location using [2to3](https://docs.python.org/3/library/2to3.html). You may need to correct the the tabs within `synpy/syncopation.py` as these can be  inconsistent after the 2to3 conversion is applied.
