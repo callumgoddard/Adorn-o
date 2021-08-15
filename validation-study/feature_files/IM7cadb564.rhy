@@ -1,0 +1,24 @@
+T{4/4} # time-signature
+TPQ{4} #ticks per quaternote
+V{1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0}
+T{4/4} # time-signature
+TPQ{4} #ticks per quaternote
+V{1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0}
+T{4/4} # time-signature
+TPQ{4} #ticks per quaternote
+V{1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0}
+T{4/4} # time-signature
+TPQ{4} #ticks per quaternote
+V{1.0, 0, 1.0, 0, 1.0, 0, 1.0, 0, 1.0, 0, 1.0, 0, 1.0, 0, 1.0, 0}
+T{4/4} # time-signature
+TPQ{4} #ticks per quaternote
+V{0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0}
+T{4/4} # time-signature
+TPQ{4} #ticks per quaternote
+V{1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0}
+T{4/4} # time-signature
+TPQ{4} #ticks per quaternote
+V{1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0, 1.0, 1.0}
+T{4/4} # time-signature
+TPQ{4} #ticks per quaternote
+V{1.0, 0, 1.0, 0, 1.0, 0, 1.0, 0, 1.0, 0, 1.0, 0, 1.0, 0, 1.0, 0}
