@@ -11,7 +11,7 @@ import json
 import guitarpro
 
 # Local application imports
-import parser
+from .. import utilities
 from .calculate_functions import (
     calculate_note_pitch,
     calculate_duration_for_notes_in_song,
@@ -134,7 +134,7 @@ def get_note_dynamic(note, beat):
         elif beat.text.value.find("dim") != -1 or beat.text.value.find("dim.") != -1:
             cres_dim = "dim"
 
-    return datatypes.Dynamic(parser.utilities.dynamic.get(note.velocity), cres_dim)
+    return datatypes.Dynamic(utilities.dynamic.get(note.velocity), cres_dim)
 
 
 # Gets the start time relative to the very start of the piece
@@ -359,7 +359,6 @@ def get_plucking_accent(note, beat):
         # check to see if there is text indicating the
         # accent is only meant to be stacatto
         # to correct gp5 exporting issues
-
         if beat.text:
             if beat.text.value.find("St") >= 0:
                 return False
@@ -622,7 +621,7 @@ def get_measure_data(
     previous_beat_notes = previous_beat_notes
 
     for track in song.tracks:
-        if parser.utilities.midi2BassType.get(track.channel.instrument):
+        if utilities.midi2BassType.get(track.channel.instrument):
             for measure in track.measures:
                 if measure.header.start == measure_to_get_data_for.header.start:
                     measure_start_time = get_start_time(measure)
@@ -921,7 +920,7 @@ def get_song_measures(song, track_number=False):
     song_measures = []
     if track_number is False:
         for track in song.tracks:
-            if parser.utilities.midi2BassType.get(track.channel.instrument):
+            if utilities.midi2BassType.get(track.channel.instrument):
                 # setup parameters to keep track of previous notes:
                 # that could indicate an adorment for the next note
                 # that happens to be in the next bar:
@@ -946,7 +945,7 @@ def get_song_measures(song, track_number=False):
         for track in song.tracks:
             track_count += 1
             if track_count == track_number:
-                if parser.utilities.midi2BassType.get(track.channel.instrument):
+                if utilities.midi2BassType.get(track.channel.instrument):
                     # setup parameters to keep track of previous notes:
                     # that could indicate an adorment for the next note
                     # that happens to be in the next bar:
@@ -974,7 +973,7 @@ def get_bass_track_numbers(song):
     bass_tracks = []
     track_number = 0
     for track in song.tracks:
-        if parser.utilities.midi2BassType.get(track.channel.instrument):
+        if utilities.midi2BassType.get(track.channel.instrument):
             track_number += 1
             bass_tracks.append(track_number)
     return bass_tracks
