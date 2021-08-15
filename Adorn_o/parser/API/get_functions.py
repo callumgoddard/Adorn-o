@@ -125,13 +125,13 @@ def get_note_dynamic(note, beat):
     cres_dim = None
     if beat.text:
         if (
-            beat.text.value.find("cres") != -1
-            or beat.text.value.find("cres.") != -1
-            or beat.text.value.find("cresc") != -1
-            or beat.text.value.find("cresc.") != -1
+            beat.text.find("cres") != -1
+            or beat.text.find("cres.") != -1
+            or beat.text.find("cresc") != -1
+            or beat.text.find("cresc.") != -1
         ):
             cres_dim = "cresc"
-        elif beat.text.value.find("dim") != -1 or beat.text.value.find("dim.") != -1:
+        elif beat.text.find("dim") != -1 or beat.text.find("dim.") != -1:
             cres_dim = "dim"
 
     return datatypes.Dynamic(utilities.dynamic.get(note.velocity), cres_dim)
@@ -360,7 +360,7 @@ def get_plucking_accent(note, beat):
         # accent is only meant to be stacatto
         # to correct gp5 exporting issues
         if beat.text:
-            if beat.text.value.find("St") >= 0:
+            if beat.text.find("St") >= 0:
                 return False
         else:
             return True
@@ -433,7 +433,7 @@ def get_fretting_technique(beat, note, hammerpullinfo):
         return None
     elif note.value > 0:
         if beat.text:
-            if beat.text.value.find("lh") != -1 or beat.text.value.find("LH") != -1:
+            if beat.text.find("lh") != -1 or beat.text.find("LH") != -1:
                 return "left-hand-slap"
         return "fretting"
 
