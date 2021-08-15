@@ -8,28 +8,19 @@ Adorn-o is a computationally creative musical performance system for virtuosic b
 Check `Adorn_o/main.py` for examples.
 
 ## Requirements
+Adorn-o is best run from a virtual environment setup in the root folder.
+The current version of Adorn-o is in the process of being updated to run on python 3.8. In addition to the python packages required, some additional components need to be downloaded and added.
 
-Adorn-o is best run from a virtual environment setup in the root folder. In addition to the python packages required, some additional components need to be downloaded and added.
-
-Once you have added each of these running: `Adorn_o/test_all.py` will test Adorn-o, if the tested complete with no error all requirements are installed correctly.
+<!---Once you have added each of these running: `Adorn_o/test_all.py` will test Adorn-o, if the tested complete with no error all requirements are installed correctly.--->
 
 ### Python Packages
 
 The required python packages are provided in: `requirements.txt`
 
 
-### Adding and updating Synpy:
-Synpy is required as part of the musical feature analysis. However the version provided here: https://code.soundsoftware.ac.uk/projects/syncopation-dataset/repository/show/synpy needs to be converted to run with python 3.
-
-You can download and place the `synpy` folder within the root directory and call:
-```
-2to3 --output-dir=Adorn_o/synpy -W -n synpy
-```
-
-Which _should_ update and add the synpy files required into the correct location using [2to3](https://docs.python.org/3/library/2to3.html). You may need to correct the the tabs within `Adorn_o/synpy/syncopation.py` as there can be inconsistencies after the 2to3 conversion.
-
-
 ### Adding and Updating FANTASTIC:
+
+Please note that currently issues have been found preventing FANTASTIC functioning with R-4.1.1 and rpy2 on python 3.8.
 
 The [FANTASTIC](http://doc.gold.ac.uk/isms/mmm/?page=Software%20and%20Documentation) source files from: [http://www.doc.gold.ac.uk/isms/m4s/FANTASTIC.zip](http://www.doc.gold.ac.uk/isms/m4s/FANTASTIC.zip) are required to be extracted to:
 ```
@@ -72,6 +63,14 @@ callums.feature.similarity <- function(df.in = data.frame(),mel.fns=list.files(p
 ### Adding the bass guitar digital waveguide
 
 To be able to render audio output the contents of the `waveguide_model` folder from: [https://github.com/callumgoddard/bass_guitar_waveguide_model](https://github.com/callumgoddard/bass_guitar_waveguide_model) are required to be placed within: `Adorn_o/waveguide_model`.
+
+## Acknowledgements
+### Updated Synpy:
+Synpy is required as part of the musical feature analysis. However the version provided here: https://code.soundsoftware.ac.uk/projects/syncopation-dataset/repository/show/synpy has not been updated to work on python 3.
+
+An updated version for python 3 is provided within: `Adorn_o/feature_analysis/synpy`.
+
+Its functionality has been updated to be compatible with functions within `Adorn_o`. This is not a comprehensive conversion. Conversion to python 3 was conducted using `2to3` and manually updating specific legacy syntax that was not updated.
 
 ## Contact
 
