@@ -210,9 +210,7 @@ def run_melconv(midi_file_in, mcsv_out, melconv_loc=melconv_location):
                 "Output not type csv... correcting to " + mcsv_output_file_name + ".csv"
             )
 
-        # need to prepend a '.' for mac os file systems
-        # this possible needs to be updated if it is to run on another os
-        mcsv_out = "." + mcsv_output_path + "/" + mcsv_output_file_name + ".csv"
+        mcsv_out = mcsv_output_path + "/" + mcsv_output_file_name + ".csv"
 
     elif not mcsv_output_file_name:
         print("No output mcsv file name specified using midi file name...")
