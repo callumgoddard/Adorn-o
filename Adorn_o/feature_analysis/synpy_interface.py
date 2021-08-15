@@ -8,14 +8,14 @@ import csv
 import os.path
 
 # 3rd party imports
-from .. import synpy
-from ..synpy import PRS
-from ..synpy import KTH
-from ..synpy import LHL
-from ..synpy import SG
-from ..synpy import TMC
-from ..synpy import TOB
-from ..synpy import WNBD
+from . import synpy
+from .synpy import PRS
+from .synpy import KTH
+from .synpy import LHL
+from .synpy import SG
+from .synpy import TMC
+from .synpy import TOB
+from .synpy import WNBD
 
 import pandas as pd
 
@@ -65,6 +65,7 @@ def compute_features(
         for m in models:
             try:
                 s = synpy.calculate_syncopation(txt2models.get(m), synpy_bars[bar - 1])
+                print(s)
             except:
                 "Error cannot analyse %i of %s file" % (bar, file_name)
                 s = {}
@@ -148,7 +149,7 @@ def make_feature_table(
     df = pd.DataFrame(data[1:], columns=data[0])
 
     if save is True:
-        with open(output, "wb") as csvfile:
+        with open(output, "w") as csvfile:
             synpywriter = csv.writer(csvfile, delimiter=",")
             for row in data:
                 synpywriter.writerow(row)
