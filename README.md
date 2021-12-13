@@ -78,7 +78,7 @@ Callum Goddard: [c.goddard@qmul.ac.uk](c.goddard@qmul.ac.uk)
 
 ## Reference
 ```
-@phdthesis{Goddard:2021,
+@phdthesis{Goddard:thesis,
 	address = {Queen Mary University of London},
 	author = {Callum Goddard},
 	school = {School of Electronic Engineering and Computer Science},
