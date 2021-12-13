@@ -83,5 +83,5 @@ Callum Goddard: [c.goddard@qmul.ac.uk](c.goddard@qmul.ac.uk)
 	author = {Callum Goddard},
 	school = {School of Electronic Engineering and Computer Science},
 	title = {Virtuosity in Computationally Creative Musical Performance for Bass Guitar},
-	year = {2021}}
+	year = {Under Examination}}
  ```
